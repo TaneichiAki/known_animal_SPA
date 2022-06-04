@@ -10,5 +10,6 @@
     print('Error:'.$e->getMessage());
     die();
   }
-  echo {result:true,user:{firstname:".$users['data']['first_name'].",lastname:".$users['data']['last_name']."}};
+  echo aki;
+  //echo {result:true,user:{firstname:".$users['data']['first_name'].",lastname:".$users['data']['last_name']."}};
  ?>
