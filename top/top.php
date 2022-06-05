@@ -12,19 +12,6 @@
 			header("Location:".Constants::LOGIN_URL);
 			exit();
 		}
-		try{
-			//データベースに接続し、テーブルに登録されているユーザーの知ってる動物データを抽出
-			$animal_sql = 'select * from users inner join animal on users.id = animal.memberid  where user_id = ?';
-			$animals = Dao::db()->show_any_rows($animal_sql,array($_SESSION['login']));
-			//登録されている動物件数
-			$count = Dao::db()->count_row($animal_sql,array($_SESSION['login']));
-			//ログインユーザー情報
-			$users_sql = 'select * from users where user_id = ?' ;
-			$users = Dao::db()->show_one_row($users_sql,array($_SESSION['login']));
-		}catch(PDOException $e){
-			print('Error:'.$e->getMessage());
-			die();
-		}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -84,9 +71,30 @@
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
  		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
  		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+		<script type="module">
+			import { WebApi,LoadingCircle,Modal } from "../js/common.js";
+			const top = (() => {
+				async function apiCallTest(){
+    			const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/test_user.php","GET");
+    			let response = JSON.parse(result);
+					if(response.result == false){
+						window.location.href = '/~testaki/known_animal_SPA/login/login.php';
+					}
+				}
+				function _startup(){
+					window.onload = function(){
+						apiCallTest();
+					}
+
+				}
+				return {startup:_startup}
+			})();
+			top.startup();
+		</script>
 		<div class="row mt-5 mb-2">
 			<br>
-			<p class="account">ようこそ！ <?php echo $users['data']['first_name']?>さん</p>
+			<p class="account">
+			</p>
 		</div>
 		<div class="row">
 			<?php echo $_REQUEST["update_message"] ?>
@@ -96,36 +104,7 @@
 					<?php for($i = 0;$i < $count; $i++): ?>
   				<div class="col-sm-3">
 						<div class="card">
-							<?php
-							$filename = Constants::ANIMAL_PHOTO_SERVER.$animals['data'][$i]['no'].'_animal.jpg';
-							?>
-							<?php if(file_exists($filename)): ?>
-							<img src='/~testaki/animal_photo/<?php echo $animals['data'][$i]['no'] ?>_animal.jpg?<?php echo date("YmdHis");?>' class="card-img-top" height=220 width=auto>
-							<?php else: ?>
-							<img src='/~testaki/animal_photo/no_image.jpeg?<?php echo date("YmdHis");?>' class="card-img-top" height=220 width=auto>
-							<?php endif; ?>
-							<div class="card-body">
-								<h5 class="card-title">
-									<?= $animals['data'][$i]['name']; ?>
-								</h5>
-								<p>科：
-									<?php
-										echo $animals['data'][$i]['family'];
-									?>
-								</p>
-								<p>特徴：
-									<?php
-										echo $animals['data'][$i]['features'];
-									?>
-								</p>
-								<p>知った日：
-									<?php
-										echo $animals['data'][$i]['date'];
-									?>
-								</p>
-								<button class="btn btn-primary" type="submit" onclick="location.href='<?php echo Constants::EDIT_URL?>?update_animal=<?php echo $animals['data'][$i]['no'] ?>'">更新</button>
-								<button class="btn btn-primary" type="submit" onclick="window.open('<?php echo Constants::DELETE_URL?>?delete_animal=<?php echo $animals['data'][$i]['no'] ?>','Delete','width=800,height=600')">削除</button>
-							</div>
+
 						</div>
 					</div>
 					<?php endfor; ?>
