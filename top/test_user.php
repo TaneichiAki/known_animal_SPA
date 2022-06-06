@@ -15,8 +15,17 @@
   try{
     //データベースに接続し、テーブルに登録されているユーザーの知ってる動物データを抽出
     $animal_sql = 'select * from users inner join animal on users.id = animal.memberid  where user_id = ?';
-    $animals = Dao::db()->show_any_rows($animal_sql,array($_SESSION['login']));
-
+    $animals = Dao::db()->show_any_rows($animal_sql,array('aki'));
+    var_dump($animals["result"]);
+    exit;
+    if($animals["result"] == true){
+      $response = array(
+        "result"=>true,
+        "data"=>array(
+          //ここに動物データの配列を入力
+        )
+      );
+    }
     //登録されている動物件数
     $count = Dao::db()->count_row($animal_sql,array($_SESSION['login']));
 
