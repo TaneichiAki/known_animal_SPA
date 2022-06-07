@@ -77,7 +77,8 @@
 				async function apiCallTest(){
     			const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/test_user.php","GET");
     			let response = JSON.parse(result);
-					if(response.result == false){
+					console.log(response);
+					if(response.s_result == false){
 						window.location.href = '/~testaki/known_animal_SPA/login/login.php';
 					}
 				}

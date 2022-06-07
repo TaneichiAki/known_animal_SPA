@@ -7,7 +7,7 @@ class Dao {
 
 	/*
 	 * pdo生成
-	 */	
+	 */
 	private function __construct()
 	{
 		$dsn = sprintf(
@@ -35,7 +35,7 @@ class Dao {
 		{
 			if (!isset(self::$dao))
 			{
-				self::$dao = new Dao();    
+				self::$dao = new Dao();
 			}
 			return self::$dao;
 		}
@@ -44,7 +44,7 @@ class Dao {
 			die('DataBase Error:' .$e->getMessage());
 		}
 	}
-	
+
 	/*
 	 * pdo.prepareを実行
 	 */
@@ -59,7 +59,7 @@ class Dao {
 			die('DataBase Error:' .$e->getMessage());
 		}
 	}
-	
+
 	/*
 	 * pdo.bindParamsを実行
 	 */
@@ -119,7 +119,7 @@ class Dao {
 			die('DataBase Error:' .$e->getMessage());
 		}
 	}
-	
+
 	/*
 	 * selectで複数件取得メソッド
 	 */
@@ -172,7 +172,7 @@ class Dao {
 			die('DataBase Error:' .$e->getMessage());
 		}
 	}
-	
+
 	/*
 	 * Insert,Update,Deleteで使える
 	 */
