@@ -98,11 +98,11 @@
 			</p>
 		</div>
 		<div class="row">
-			<?php echo $_REQUEST["update_message"] ?>
+			<!--<?php echo $_REQUEST["update_message"] ?>-->
 		</div>
 			<div class="card-group">
 				<div class="row">
-					<?php for($i = 0;$i < $count; $i++): ?>
+					<?php for($i = 0;$i < 3; $i++): ?>
   				<div class="col-sm-3">
 						<div class="card">
 

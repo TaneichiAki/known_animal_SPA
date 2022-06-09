@@ -24,15 +24,21 @@
 
     if($animals["result"] == true){
         $response = array($animals['data']);
-        echo json_encode($animals['data']);
+        echo json_encode($response);
+    }else{
+      $response = array(
+        "result"=>false,
+        "message"=>"動物データを取得できませんでした"
+      );
+      echo json_encode($response);
     }
-    exit;
+
     //ログインユーザー情報
     $users_sql = 'select * from users where user_id = ?';
     $users = Dao::db()->show_one_row($users_sql,array($_SESSION['login']));
     if($users["result"] == true){
       $response = array(
-        "l_result"=>true,
+        "result"=>true,
         "user"=>array(
           "firstname"=>$users['data']['first_name'],
           "lastname"=>$users['data']['last_name']
@@ -41,7 +47,7 @@
       echo json_encode($response);
     }else{
       $response = array(
-        "l_result"=>false,
+        "result"=>false,
         "message"=>"ユーザー情報を取得できませんでした"
       );
       //echo $response;
