@@ -75,22 +75,28 @@
 			import { WebApi,LoadingCircle,Modal } from "../js/common.js";
 			const top = (() => {
 				async function apiCallTest(){
-    			const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/test_user.php","GET");
-    			let response = JSON.parse(result);
+    			const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
+					console.log(result);
+					let response = JSON.parse(result);
 					console.log(response.user.firstname);
 					if(response.s_result == false){
 						window.location.href = '/~testaki/known_animal_SPA/login/login.php';
 					}
 				}
+				async function display_name(){
+					document.getElementsByClassName('account').insertAdjacentText('afterbegin','ようこそ！'.response.user.firstname.'さん');
+				}
 				function _startup(){
 					window.onload = function(){
 						apiCallTest();
+						display_name();
 					}
 
 				}
 				return {startup:_startup}
 			})();
 			top.startup();
+
 		</script>
 		<div class="row mt-5 mb-2">
 			<br>

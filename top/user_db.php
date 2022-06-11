@@ -13,26 +13,6 @@
   }
 
   try{
-    //データベースに接続し、テーブルに登録されているユーザーの知ってる動物データを抽出
-    $animal_sql = 'select name,family,features,date from users inner join animal on users.id = animal.memberid  where user_id = ?';
-    $animals = Dao::db()->show_any_rows($animal_sql,array('aki'));
-    //var_dump($animals["data"][0]);
-
-    //登録されている動物件数
-    $count = Dao::db()->count_row($animal_sql,array('aki'));
-    //var_dump($count);
-
-    if($animals["result"] == true){
-        $response = array($animals['data']);
-        echo json_encode($response);
-    }else{
-      $response = array(
-        "result"=>false,
-        "message"=>"動物データを取得できませんでした"
-      );
-      echo json_encode($response);
-    }
-
     //ログインユーザー情報
     $users_sql = 'select * from users where user_id = ?';
     $users = Dao::db()->show_one_row($users_sql,array('aki'));
