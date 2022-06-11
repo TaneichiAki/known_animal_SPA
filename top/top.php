@@ -77,7 +77,7 @@
 				async function apiCallTest(){
     			const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/test_user.php","GET");
     			let response = JSON.parse(result);
-					console.log(response);
+					console.log(response.user.firstname);
 					if(response.s_result == false){
 						window.location.href = '/~testaki/known_animal_SPA/login/login.php';
 					}
@@ -96,9 +96,6 @@
 			<br>
 			<p class="account">
 			</p>
-		</div>
-		<div class="row">
-			<!--<?php echo $_REQUEST["update_message"] ?>-->
 		</div>
 			<div class="card-group">
 				<div class="row">
