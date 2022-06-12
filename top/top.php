@@ -24,6 +24,7 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 		<link rel="stylesheet" type="text/css" href="./top.css">
+		<link rel="stylesheet" type="text/css" href="../css/common.css">
 		<title>TOP</title>
 	</head>
 	<body>
@@ -71,25 +72,95 @@
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
  		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
  		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+		<div class="row mt-5 mb-2">
+			<br>
+			<p class="account">
+			</p>
+		</div>
+			<div class="card-group">
+				<div class="row" id="roop">
+
+				</div>
+			</div>
+		</div>
 		<script type="module">
 			import { WebApi,LoadingCircle,Modal } from "../js/common.js";
+			const lc = new LoadingCircle({});
 			const top = (() => {
-				async function apiCallTest(){
-    			const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
+				async function user_get(){
+					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
 					console.log(result);
 					let response = JSON.parse(result);
 					console.log(response.user.firstname);
 					if(response.s_result == false){
 						window.location.href = '/~testaki/known_animal_SPA/login/login.php';
 					}
+
+					let user_name = document.getElementsByClassName('account');
+					console.log(user_name);
+					user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
 				}
-				async function display_name(){
-					document.getElementsByClassName('account').insertAdjacentText('afterbegin','ようこそ！'.response.user.firstname.'さん');
+				async function animal_get(){
+					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_db.php","GET");
+					console.log(result);
+					let response = JSON.parse(result);
+					console.log(response[0].length);
+					let animal_count = response[0].length;
+					if(response.s_result == false){
+						window.location.href = '/~testaki/known_animal_SPA/login/login.php';
+					}
+
+					let roop = document.getElementById('roop');
+					for(let i=0; i<animal_count; i++){
+						let newElement = document.createElement("div"); // div要素作成
+						newElement.classList.add('col-sm-3');//クラス属性追加
+  					roop.appendChild(newElement);
+
+						let newElement2 = document.createElement("div"); // div要素作成
+						newElement2.classList.add('card');//クラス属性追加
+						newElement.appendChild(newElement2);
+
+						let newElement3 = document.createElement("div"); // div要素作成
+						newElement3.classList.add('card-body');//クラス属性追加
+						newElement2.appendChild(newElement3);
+
+						let newElement4 = document.createElement("h5"); // div要素作成
+						newElement4.classList.add('card-title');//クラス属性追加
+						newElement4.textContent = response[0][i].name;
+						newElement3.appendChild(newElement4);
+
+						let newElement_p = document.createElement("p"); // div要素作成
+						newElement_p.textContent = "科：" + response[0][i].family;
+						newElement3.appendChild(newElement_p);
+
+						let newElement_p2 = document.createElement("p"); // div要素作成
+						newElement_p2.textContent = "特徴：" + response[0][i].features;
+						newElement3.appendChild(newElement_p2);
+
+						let newElement_p3 = document.createElement("p"); // div要素作成
+						newElement_p3.textContent = "知った日：" + response[0][i].date;
+						newElement3.appendChild(newElement_p3);
+					}
+
+					//let animal_d = document.getElementById('card');
+					//let new_element1 = document.createElement('div');
+					//new_element1.classList.add('card-body');
+					//animal_d.after(new_element1);
+					//let new_element2 = document.createElement('h5');
+					//new_element2.classList.add('card-title');
+					//new_element1.after(new_element2);
+					//new_element2.textContent = response[0][0].name;
+					//console.log(22);
+					//user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
 				}
 				function _startup(){
 					window.onload = function(){
-						apiCallTest();
-						display_name();
+
+						lc.show();
+						user_get();
+						animal_get();
+						lc.hide();
 					}
 
 				}
@@ -98,22 +169,5 @@
 			top.startup();
 
 		</script>
-		<div class="row mt-5 mb-2">
-			<br>
-			<p class="account">
-			</p>
-		</div>
-			<div class="card-group">
-				<div class="row">
-					<?php for($i = 0;$i < 3; $i++): ?>
-  				<div class="col-sm-3">
-						<div class="card">
-
-						</div>
-					</div>
-					<?php endfor; ?>
-				</div>
-			</div>
-		</div>
 	</body>
 </html>

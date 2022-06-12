@@ -14,7 +14,7 @@
 
   try{
     //データベースに接続し、テーブルに登録されているユーザーの知ってる動物データを抽出
-    $animal_sql = 'select name,family,features,date from users inner join animal on users.id = animal.memberid  where user_id = ?';
+    $animal_sql = 'select no,name,family,features,date from users inner join animal on users.id = animal.memberid  where user_id = ?';
     $animals = Dao::db()->show_any_rows($animal_sql,array('aki'));
     //var_dump($animals["data"][0]);
 
@@ -24,34 +24,12 @@
 
     if($animals["result"] == true){
         $response = array($animals['data']);
-        //echo json_encode($response);
-        echo "[{hoge:1}]";
+        echo json_encode($response);
     }else{
       $response = array(
         "result"=>false,
         "message"=>"動物データを取得できませんでした"
       );
-      echo json_encode($response);
-    }
-
-    //ログインユーザー情報
-    $users_sql = 'select * from users where user_id = ?';
-    $users = Dao::db()->show_one_row($users_sql,array('aki'));
-    if($users["result"] == true){
-      $response = array(
-        "result"=>true,
-        "user"=>array(
-          "firstname"=>$users['data']['first_name'],
-          "lastname"=>$users['data']['last_name']
-        )
-      );
-      echo json_encode($response);
-    }else{
-      $response = array(
-        "result"=>false,
-        "message"=>"ユーザー情報を取得できませんでした"
-      );
-      //echo $response;
       echo json_encode($response);
     }
   }catch(PDOException $e){
