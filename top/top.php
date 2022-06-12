@@ -44,7 +44,7 @@
 		  <div class="collapse navbar-collapse" id="navbarNav">
 		    <ul class="navbar-nav">
 		      <li class="nav-item active">
-		        <a class="nav-link" href="<?php echo Constants::ENTRY_URL?>">新規登録</a>
+		        <a class="nav-link" id="entry" href="<?php echo Constants::ENTRY_URL?>">新規登録</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href='<?php echo Constants::USER_EDIT_URL?>'>ユーザー情報の編集</a>
@@ -87,6 +87,7 @@
 		<script type="module">
 			import { WebApi,LoadingCircle,Modal } from "../js/common.js";
 			const lc = new LoadingCircle({});
+
 			const top = (() => {
 				async function user_get(){
 					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
@@ -119,6 +120,9 @@
 
 						let newElement2 = document.createElement("div"); // div要素作成
 						newElement2.classList.add('card');//クラス属性追加
+						//let filename = '/home/testaki/animal_photo/'+ response[0][i].no + '_animal.jpg';
+						//if(file_exists(filename))
+
 						newElement.appendChild(newElement2);
 
 						let newElement3 = document.createElement("div"); // div要素作成
@@ -154,13 +158,21 @@
 					//console.log(22);
 					//user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
 				}
+;
+
 				function _startup(){
 					window.onload = function(){
 
 						lc.show();
 						user_get();
 						animal_get();
+						let btn = document.getElementById('entry');
+						btn.addEventListener('click', function() {
+							alert('クリックされました！');
+						}, false);
 						lc.hide();
+
+
 					}
 
 				}
