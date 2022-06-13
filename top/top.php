@@ -145,6 +145,20 @@
 						let newElement_p3 = document.createElement("p"); // div要素作成
 						newElement_p3.textContent = "知った日：" + response[0][i].date;
 						newElement3.appendChild(newElement_p3);
+
+						let newElement_bt_e = document.createElement("button"); // div要素作成
+						newElement_bt_e.textContent = "更新";
+						newElement_bt_e.classList.add("btn","btn-primary");//クラス属性追加
+						newElement_bt_e.setAttribute("type","submit");
+						newElement_bt_e.setAttribute("onclick","location.href='/~testaki/known_animal_SPA/animal_edit/edit.php?update_animal="+ response[0][i].no +"'");
+						newElement3.appendChild(newElement_bt_e);
+
+						let newElement_bt_d = document.createElement("button"); // div要素作成
+						newElement_bt_d.textContent = "削除";
+						newElement_bt_d.classList.add("btn","btn-primary");//クラス属性追加
+						newElement_bt_d.setAttribute("type","submit");
+						newElement_bt_d.setAttribute("onclick","window.open('/~testaki/known_animal_SPA/delete/delete.php?delete_animal="+ response[0][i].no +"','Delete','width=800,height=600')");
+						newElement3.appendChild(newElement_bt_d);
 					}
 
 					//let animal_d = document.getElementById('card');
