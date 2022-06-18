@@ -172,14 +172,17 @@
 					//console.log(22);
 					//user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
 				}
-;
-
+				async function animal_image_get(){
+					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_image_db.php","GET");
+					console.log(result);
+				}
 				function _startup(){
 					window.onload = function(){
 
 						lc.show();
 						user_get();
 						animal_get();
+						animal_image_get();
 						let btn = document.getElementById('entry');
 						btn.addEventListener('click', function() {
 							alert('クリックされました！');

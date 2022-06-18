@@ -15,7 +15,7 @@
   try{
     //ログインユーザー情報
     $users_sql = 'select * from users where user_id = ?';
-    $users = Dao::db()->show_one_row($users_sql,array('aki'));
+    $users = Dao::db()->show_one_row($users_sql,array($_SESSION['login']));
     if($users["result"] == true){
       $response = array(
         "result"=>true,
