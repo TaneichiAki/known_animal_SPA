@@ -27,8 +27,7 @@
         echo json_encode($response);
     }else{
       $response = array(
-        "result"=>false,
-        "message"=>"動物データを取得できませんでした"
+        "result"=>false
       );
       echo json_encode($response);
     }

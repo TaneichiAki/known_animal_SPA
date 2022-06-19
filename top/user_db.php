@@ -4,13 +4,13 @@
 
   session_start();
   //セッションIDがセットされていなかったらログインページに戻る
-  if(! isset($_SESSION['login'])){
-    $response = array(
-      "s_result"=>false
-    );
+  //if(! isset($_SESSION['login'])){
+
     //echo json_encode($response);
     //exit;
-  }
+    http_response_code(401);
+    
+  //}
 
   try{
     //ログインユーザー情報
@@ -27,8 +27,7 @@
       echo json_encode($response);
     }else{
       $response = array(
-        "result"=>false,
-        "message"=>"ユーザー情報を取得できませんでした"
+        "result"=>false
       );
       //echo $response;
       echo json_encode($response);

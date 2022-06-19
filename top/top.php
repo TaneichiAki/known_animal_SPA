@@ -90,99 +90,116 @@
 
 			const top = (() => {
 				async function user_get(){
-					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
-					console.log(result);
-					let response = JSON.parse(result);
-					console.log(response.user.firstname);
-					if(response.s_result == false){
-						window.location.href = '/~testaki/known_animal_SPA/login/login.php';
-					}
+					try{
+						const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
 
-					let user_name = document.getElementsByClassName('account');
-					console.log(user_name);
-					user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
+						let response = JSON.parse(result);
+						if(response.result == true){
+							let user_name = document.getElementsByClassName('account');
+							user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
+						}else{
+							window.location.href = '/~testaki/known_animal_SPA/login/login.php';
+						}
+					}catch(e){
+							let err = e;
+							console.log(err.message);
+					}
 				}
+
 				async function animal_get(){
 					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_db.php","GET");
 					console.log(result);
 					let response = JSON.parse(result);
-					console.log(response[0].length);
-					let animal_count = response[0].length;
-					if(response.s_result == false){
-						window.location.href = '/~testaki/known_animal_SPA/login/login.php';
+					console.log(response.result);
+					if(response.result == true){
+						console.log(response[0].length);
+						let animal_count = response[0].length;
+
+						let roop = document.getElementById('roop');
+						for(let i=0; i<animal_count; i++){
+							let newElement = document.createElement("div"); // div要素作成
+							newElement.classList.add('col-sm-3');//クラス属性追加
+	  					roop.appendChild(newElement);
+
+							let newElement2 = document.createElement("div"); // div要素作成
+							newElement2.classList.add('card');//クラス属性追加
+							newElement.appendChild(newElement2);
+
+							let newElement_img = document.createElement("img");
+							const call_img = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_image_db.php?imgNo="+response[0][i].no,"GET");
+							console.log(call_img);
+							console.log(5);
+							let response_img = JSON.parse(call_img);
+							let judgement = response_img.result;
+
+							if(judgement == true){
+								newElement_img.setAttribute("src","/~testaki/animal_photo/" + response[0][i].no +"_animal.jpg");
+							}else{
+								newElement_img.setAttribute("src","/~testaki/animal_photo/no_image.jpeg");
+							}
+							newElement_img.classList.add('card-img-top');
+							newElement_img.setAttribute("height",220);
+							newElement_img.setAttribute("width","auto");
+							newElement2.appendChild(newElement_img);
+
+							let newElement3 = document.createElement("div"); // div要素作成
+							newElement3.classList.add('card-body');//クラス属性追加
+							newElement2.appendChild(newElement3);
+
+							let newElement4 = document.createElement("h5"); // div要素作成
+							newElement4.classList.add('card-title');//クラス属性追加
+							newElement4.textContent = response[0][i].name;
+							newElement3.appendChild(newElement4);
+
+							let newElement_p = document.createElement("p"); // div要素作成
+							newElement_p.textContent = "科：" + response[0][i].family;
+							newElement3.appendChild(newElement_p);
+
+							let newElement_p2 = document.createElement("p"); // div要素作成
+							newElement_p2.textContent = "特徴：" + response[0][i].features;
+							newElement3.appendChild(newElement_p2);
+
+							let newElement_p3 = document.createElement("p"); // div要素作成
+							newElement_p3.textContent = "知った日：" + response[0][i].date;
+							newElement3.appendChild(newElement_p3);
+
+							let newElement_bt_e = document.createElement("button"); // div要素作成
+							newElement_bt_e.textContent = "更新";
+							newElement_bt_e.classList.add("btn","btn-primary");//クラス属性追加
+							newElement_bt_e.setAttribute("type","submit");
+							newElement_bt_e.setAttribute("onclick","location.href='/~testaki/known_animal_SPA/animal_edit/edit.php?update_animal="+ response[0][i].no +"'");
+							newElement3.appendChild(newElement_bt_e);
+
+							let newElement_bt_d = document.createElement("button"); // div要素作成
+							newElement_bt_d.textContent = "削除";
+							newElement_bt_d.classList.add("btn","btn-primary");//クラス属性追加
+							newElement_bt_d.setAttribute("type","submit");
+							newElement_bt_d.setAttribute("onclick","window.open('/~testaki/known_animal_SPA/delete/delete.php?delete_animal="+ response[0][i].no +"','Delete','width=800,height=600')");
+							newElement3.appendChild(newElement_bt_d);
+						}
+
+						//let animal_d = document.getElementById('card');
+						//let new_element1 = document.createElement('div');
+						//new_element1.classList.add('card-body');
+						//animal_d.after(new_element1);
+						//let new_element2 = document.createElement('h5');
+						//new_element2.classList.add('card-title');
+						//new_element1.after(new_element2);
+						//new_element2.textContent = response[0][0].name;
+						//console.log(22);
+						//user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
+					}else{
+						alert('まだ動物データは登録されていません');
 					}
-
-					let roop = document.getElementById('roop');
-					for(let i=0; i<animal_count; i++){
-						let newElement = document.createElement("div"); // div要素作成
-						newElement.classList.add('col-sm-3');//クラス属性追加
-  					roop.appendChild(newElement);
-
-						let newElement2 = document.createElement("div"); // div要素作成
-						newElement2.classList.add('card');//クラス属性追加
-						//let filename = '/home/testaki/animal_photo/'+ response[0][i].no + '_animal.jpg';
-						//if(file_exists(filename))
-
-						newElement.appendChild(newElement2);
-
-						let newElement3 = document.createElement("div"); // div要素作成
-						newElement3.classList.add('card-body');//クラス属性追加
-						newElement2.appendChild(newElement3);
-
-						let newElement4 = document.createElement("h5"); // div要素作成
-						newElement4.classList.add('card-title');//クラス属性追加
-						newElement4.textContent = response[0][i].name;
-						newElement3.appendChild(newElement4);
-
-						let newElement_p = document.createElement("p"); // div要素作成
-						newElement_p.textContent = "科：" + response[0][i].family;
-						newElement3.appendChild(newElement_p);
-
-						let newElement_p2 = document.createElement("p"); // div要素作成
-						newElement_p2.textContent = "特徴：" + response[0][i].features;
-						newElement3.appendChild(newElement_p2);
-
-						let newElement_p3 = document.createElement("p"); // div要素作成
-						newElement_p3.textContent = "知った日：" + response[0][i].date;
-						newElement3.appendChild(newElement_p3);
-
-						let newElement_bt_e = document.createElement("button"); // div要素作成
-						newElement_bt_e.textContent = "更新";
-						newElement_bt_e.classList.add("btn","btn-primary");//クラス属性追加
-						newElement_bt_e.setAttribute("type","submit");
-						newElement_bt_e.setAttribute("onclick","location.href='/~testaki/known_animal_SPA/animal_edit/edit.php?update_animal="+ response[0][i].no +"'");
-						newElement3.appendChild(newElement_bt_e);
-
-						let newElement_bt_d = document.createElement("button"); // div要素作成
-						newElement_bt_d.textContent = "削除";
-						newElement_bt_d.classList.add("btn","btn-primary");//クラス属性追加
-						newElement_bt_d.setAttribute("type","submit");
-						newElement_bt_d.setAttribute("onclick","window.open('/~testaki/known_animal_SPA/delete/delete.php?delete_animal="+ response[0][i].no +"','Delete','width=800,height=600')");
-						newElement3.appendChild(newElement_bt_d);
-					}
-
-					//let animal_d = document.getElementById('card');
-					//let new_element1 = document.createElement('div');
-					//new_element1.classList.add('card-body');
-					//animal_d.after(new_element1);
-					//let new_element2 = document.createElement('h5');
-					//new_element2.classList.add('card-title');
-					//new_element1.after(new_element2);
-					//new_element2.textContent = response[0][0].name;
-					//console.log(22);
-					//user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
 				}
-				async function animal_image_get(){
-					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_image_db.php","GET");
-					console.log(result);
-				}
+
+
 				function _startup(){
 					window.onload = function(){
 
 						lc.show();
 						user_get();
 						animal_get();
-						animal_image_get();
 						let btn = document.getElementById('entry');
 						btn.addEventListener('click', function() {
 							alert('クリックされました！');
