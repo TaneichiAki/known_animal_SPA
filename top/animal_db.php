@@ -20,10 +20,13 @@
 
     //登録されている動物件数
     $count = Dao::db()->count_row($animal_sql,array($_SESSION['login']));
-    //var_dump($count);
-
+    //var_dump($animals['data']);
+    //exit;
     if($animals["result"] == true){
-        $response = array($animals['data']);
+        $response = array(
+          "result"=>true,
+          "data"=>array($animals['data'])
+        );
         echo json_encode($response);
     }else{
       $response = array(

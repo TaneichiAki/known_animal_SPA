@@ -78,9 +78,8 @@
 			<p class="account">
 			</p>
 		</div>
-			<div class="card-group">
-				<div class="row" id="roop">
-
+			<div class="row" id="roop">
+				<div class="card-group">
 				</div>
 			</div>
 		</div>
@@ -109,11 +108,11 @@
 				async function animal_get(){
 					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_db.php","GET");
 					console.log(result);
+					console.log(7);
 					let response = JSON.parse(result);
-					console.log(response.result);
-					if(response.result == true){
-						console.log(response[0].length);
-						let animal_count = response[0].length;
+					if(response.result === true){
+						console.log(response.data[0].length);
+						let animal_count = response.data[0].length;
 
 						let roop = document.getElementById('roop');
 						for(let i=0; i<animal_count; i++){
@@ -126,17 +125,9 @@
 							newElement.appendChild(newElement2);
 
 							let newElement_img = document.createElement("img");
-							const call_img = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_image_db.php?imgNo="+response[0][i].no,"GET");
-							console.log(call_img);
-							console.log(5);
-							let response_img = JSON.parse(call_img);
-							let judgement = response_img.result;
 
-							if(judgement == true){
-								newElement_img.setAttribute("src","/~testaki/animal_photo/" + response[0][i].no +"_animal.jpg");
-							}else{
-								newElement_img.setAttribute("src","/~testaki/animal_photo/no_image.jpeg");
-							}
+
+							newElement_img.setAttribute("src","animal_image_db.php?imgNo="+response.data[0][i].no);
 							newElement_img.classList.add('card-img-top');
 							newElement_img.setAttribute("height",220);
 							newElement_img.setAttribute("width","auto");
@@ -148,33 +139,33 @@
 
 							let newElement4 = document.createElement("h5"); // div要素作成
 							newElement4.classList.add('card-title');//クラス属性追加
-							newElement4.textContent = response[0][i].name;
+							newElement4.textContent = response.data[0][i].name;
 							newElement3.appendChild(newElement4);
 
 							let newElement_p = document.createElement("p"); // div要素作成
-							newElement_p.textContent = "科：" + response[0][i].family;
+							newElement_p.textContent = "科：" + response.data[0][i].family;
 							newElement3.appendChild(newElement_p);
 
 							let newElement_p2 = document.createElement("p"); // div要素作成
-							newElement_p2.textContent = "特徴：" + response[0][i].features;
+							newElement_p2.textContent = "特徴：" + response.data[0][i].features;
 							newElement3.appendChild(newElement_p2);
 
 							let newElement_p3 = document.createElement("p"); // div要素作成
-							newElement_p3.textContent = "知った日：" + response[0][i].date;
+							newElement_p3.textContent = "知った日：" + response.data[0][i].date;
 							newElement3.appendChild(newElement_p3);
 
 							let newElement_bt_e = document.createElement("button"); // div要素作成
 							newElement_bt_e.textContent = "更新";
 							newElement_bt_e.classList.add("btn","btn-primary");//クラス属性追加
 							newElement_bt_e.setAttribute("type","submit");
-							newElement_bt_e.setAttribute("onclick","location.href='/~testaki/known_animal_SPA/animal_edit/edit.php?update_animal="+ response[0][i].no +"'");
+							newElement_bt_e.setAttribute("onclick","location.href='/~testaki/known_animal_SPA/animal_edit/edit.php?update_animal="+ response.data[0][i].no +"'");
 							newElement3.appendChild(newElement_bt_e);
 
 							let newElement_bt_d = document.createElement("button"); // div要素作成
 							newElement_bt_d.textContent = "削除";
 							newElement_bt_d.classList.add("btn","btn-primary");//クラス属性追加
 							newElement_bt_d.setAttribute("type","submit");
-							newElement_bt_d.setAttribute("onclick","window.open('/~testaki/known_animal_SPA/delete/delete.php?delete_animal="+ response[0][i].no +"','Delete','width=800,height=600')");
+							newElement_bt_d.setAttribute("onclick","window.open('/~testaki/known_animal_SPA/delete/delete.php?delete_animal="+ response.data[0][i].no +"','Delete','width=800,height=600')");
 							newElement3.appendChild(newElement_bt_d);
 						}
 

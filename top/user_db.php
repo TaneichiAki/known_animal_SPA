@@ -4,13 +4,14 @@
 
   session_start();
   //セッションIDがセットされていなかったらログインページに戻る
-  //if(! isset($_SESSION['login'])){
-
+  if(! isset($_SESSION['login'])){
+    //$response = array(
+      //"s_result"=>false
+    //);
     //echo json_encode($response);
-    //exit;
     http_response_code(401);
-    
-  //}
+
+  }
 
   try{
     //ログインユーザー情報
