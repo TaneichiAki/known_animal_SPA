@@ -83,6 +83,20 @@
 				</div>
 			</div>
 		</div>
+
+		<div id="easyModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1>Great job</h1>
+        <span class="modalClose">×</span>
+      </div>
+      <div class="modal-body">
+        <p>You've just displayed this awesome Modal Window!</p>
+        <p>Let's enjoy learning JavaScript ☺️</p>
+      </div>
+    </div>
+  </div>
+
 		<script type="module">
 			import { WebApi,LoadingCircle,Modal } from "../js/common.js";
 			const lc = new LoadingCircle({});
@@ -191,12 +205,14 @@
 						lc.show();
 						user_get();
 						animal_get();
-						let btn = document.getElementById('entry');
-						btn.addEventListener('click', function() {
-							alert('クリックされました！');
-						}, false);
-						lc.hide();
+						let buttonOpen = document.getElementById('entry');
+						const modal = document.getElementById('easyModal');
+						buttonOpen.addEventListener('click', function() {
+							  modal.style.display = 'block';
+							}, false);
 
+						lc.hide();
+						
 
 					}
 
