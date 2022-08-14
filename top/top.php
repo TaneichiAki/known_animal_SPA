@@ -12,6 +12,7 @@
 			header("Location:".Constants::LOGIN_URL);
 			exit();
 		}
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -28,6 +29,39 @@
 		<title>TOP</title>
 	</head>
 	<body>
+
+		<section id="modal" class="__modal__area hidden">
+			<div id="modal_bg" class="__modal__bg"></div>
+			<div class="__modal__wrapper">
+				<div class="__modal__contents">
+					<div class="row">
+						<form method="post" id="uploadForm">
+							<div id="modal_title" class="col-12 p-2 text-center">新規登録</div>
+							<div class="col-12 p-2 text-center">
+								<input class="form-control" id="animal_name" type="text" name="animal_name" placeholder="動物の名称">
+							</div>
+							<div class="col-12 p-2 text-center">
+								<input class="form-control" id="animal_family" type="text" name="animal_family" placeholder="何科">
+							</div>
+							<div class="col-12 p-2 text-center">
+								<input class="form-control" id="animal_features" type="text" name="animal_features" placeholder="特徴">
+							</div>
+							<div class="col-12 p-2 text-center">
+								<input class="form-control" id="animal_date" type="date" name="animal_date" placeholder="知った日">
+							</div>
+							<div class="col-12 p-2 text-center">
+								<input class="form-control" type="file" name="fileupload">
+							</div>
+						</form>
+					</div>
+					<div class="__modal__buttons">
+						<button id="close" class="__modal__button __modal__close__btn">閉じる</botton>
+						<button id="md_entry" class="__modal__button __modal__exec__btn">登録</botton>
+					</div>
+				</div>
+			</div>
+		</section>
+
 		<div class="container-fluid">
 		<div class="row mb-2">
 		<!-- ナビゲーションバー -->
@@ -44,7 +78,7 @@
 		  <div class="collapse navbar-collapse" id="navbarNav">
 		    <ul class="navbar-nav">
 		      <li class="nav-item active">
-		        <a class="nav-link" id="entry" href="<?php echo Constants::ENTRY_URL?>">新規登録</a>
+		        <a class="nav-link" id="entry">新規登録</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href='<?php echo Constants::USER_EDIT_URL?>'>ユーザー情報の編集</a>
@@ -78,8 +112,8 @@
 			<p class="account">
 			</p>
 		</div>
-			<div class="row" id="roop">
-				<div class="card-group">
+			<div class="row">
+				<div class="card-group" id="loop">
 				</div>
 			</div>
 		</div>
@@ -128,16 +162,16 @@
 						console.log(response.data[0].length);
 						let animal_count = response.data[0].length;
 
-						let roop = document.getElementById('roop');
+						let loop = document.getElementById('loop');
 						for(let i=0; i<animal_count; i++){
 							let newElement = document.createElement("div"); // div要素作成
 							newElement.classList.add('col-sm-3');//クラス属性追加
-	  					roop.appendChild(newElement);
+	  					loop.appendChild(newElement);
 
 							let newElement2 = document.createElement("div"); // div要素作成
 							newElement2.classList.add('card');//クラス属性追加
 							newElement.appendChild(newElement2);
-
+							newElement2.setAttribute("animal_no",response.data[0][i].no);
 							let newElement_img = document.createElement("img");
 
 
@@ -170,9 +204,9 @@
 
 							let newElement_bt_e = document.createElement("button"); // div要素作成
 							newElement_bt_e.textContent = "更新";
-							newElement_bt_e.classList.add("btn","btn-primary");//クラス属性追加
-							newElement_bt_e.setAttribute("type","submit");
-							newElement_bt_e.setAttribute("onclick","location.href='/~testaki/known_animal_SPA/animal_edit/edit.php?update_animal="+ response.data[0][i].no +"'");
+							newElement_bt_e.classList.add("btn","btn-primary","edit");//クラス属性追加
+							newElement_bt_e.setAttribute("type","button");
+							newElement_bt_e.setAttribute("id","edit" + response.data[0][i].no);
 							newElement3.appendChild(newElement_bt_e);
 
 							let newElement_bt_d = document.createElement("button"); // div要素作成
@@ -183,36 +217,111 @@
 							newElement3.appendChild(newElement_bt_d);
 						}
 
-						//let animal_d = document.getElementById('card');
-						//let new_element1 = document.createElement('div');
-						//new_element1.classList.add('card-body');
-						//animal_d.after(new_element1);
-						//let new_element2 = document.createElement('h5');
-						//new_element2.classList.add('card-title');
-						//new_element1.after(new_element2);
-						//new_element2.textContent = response[0][0].name;
-						//console.log(22);
-						//user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
 					}else{
 						alert('まだ動物データは登録されていません');
 					}
 				}
 
+				function new_entry() {
+					let new_entry = document.getElementById("entry");
+					let close = document.getElementById("close");
+					let modal = document.getElementById("modal");
+					let modal_bg = document.getElementById("modal_bg");
+
+					new_entry.addEventListener('click',() => {
+						modal.classList.remove("hidden")
+					}, false);
+					close.addEventListener('click',() => {
+						modal.classList.add("hidden")
+					}, false);
+					modal_bg.addEventListener('click',() =>{
+						modal.classList.add("hidden")
+					}, false)
+				}
+
+				function entry() {
+					let md_entry = document.getElementById("md_entry");
+
+					md_entry.addEventListener('click',async function test() {
+						let msg = ""
+						if(document.getElementById('animal_name').value == ""){
+							msg = '動物の名称を入力してください。';
+						}
+						if(document.getElementById('animal_family').value == ""){
+							msg =　msg + '\n何科か入力してください。';
+						}
+						if(document.getElementById('animal_features').value == ""){
+							msg =　msg + '\n特徴を入力してください。';
+						}
+						if(document.getElementById('animal_date').value == ""){
+							msg =　msg + '\n知った日を入力してください。';
+						}
+						if(msg != "") {
+							alert(msg);
+						}else{
+							const url = '../animal_entry/entry.php';
+							const method = 'POST';
+							const formdata = new FormData(document.getElementById("uploadForm"));
+							const entry_result = await new WebApi({}).call(url,method,formdata);
+
+							console.log(entry_result);
+
+							let response = JSON.parse(entry_result);
+							if(response.result === true){
+								alert("登録しました！")
+								// キャッシュを無視してサーバーからリロード
+								window.location.reload(true);
+							}
+						}
+					}, false);
+				}
+
+				function edit() {
+					let edit_b = document.getElementById("edit22");
+					console.log(edit_b);
+					document.getElementById("loop").addEventListener('click',async function(e){
+						if(e.target.classList.contains('edit')){
+							console.log(1111);
+							let animal_no = e.target.parentElement.parentElement.getAttribute("animal_no");
+							const result_no = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_db.php","GET");
+							console.log(result_no);
+							console.log(999);
+							let response = JSON.parse(result_no);
+							if(response.result === true){
+								console.log(response.data[0]);
+						}
+					}
+				});
+					/*
+					let edit_b = document.getElementById("edit22");
+					let close = document.getElementById("close");
+					let modal = document.getElementById("modal");
+					let modal_bg = document.getElementById("modal_bg");
+					let modal_title = document.getElementById("modal_title");
+
+					edit_b.addEventListener('click',function() {
+						modal.classList.remove("hidden");
+						modal_title.textContent = "更新";
+					}, false);
+					close.addEventListener('click',function() {
+						modal.classList.add("hidden")
+					}, false);
+					modal_bg.addEventListener('click',function() {
+						modal.classList.add("hidden")
+					}, false);
+*/
+				}
 
 				function _startup(){
 					window.onload = function(){
-
 						lc.show();
 						user_get();
 						animal_get();
-						let buttonOpen = document.getElementById('entry');
-						const modal = document.getElementById('easyModal');
-						buttonOpen.addEventListener('click', function() {
-							  modal.style.display = 'block';
-							}, false);
-
+						new_entry();
+						entry();
+						edit();
 						lc.hide();
-						
+
 
 					}
 
