@@ -13,15 +13,17 @@
   }
 
   try{
-    //データベースに接続し、テーブルに登録されているユーザーの知ってる動物データを抽出
-    $animal_sql = 'select no,name,family,features,date from users inner join animal on users.id = animal.memberid  where user_id = ?';
-    $animals = Dao::db()->show_any_rows($animal_sql,array($_SESSION['login']));
-    //var_dump($animals["data"][0]);
+    if($_SERVER["REQUEST_METHOD"] == "GET"){
+      //データベースに接続し、テーブルに登録されているユーザーの知ってる動物データを抽出
+      $animal_sql = 'select no,name,family,features,date from users inner join animal on users.id = animal.memberid  where user_id = ?';
+      $animals = Dao::db()->show_any_rows($animal_sql,array($_SESSION['login']));
 
-    //登録されている動物件数
-    $count = Dao::db()->count_row($animal_sql,array($_SESSION['login']));
-    //var_dump($animals['data']);
-    //exit;
+      //登録されている動物件数
+      $count = Dao::db()->count_row($animal_sql,array($_SESSION['login']));
+    }
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    }
     if($animals["result"] == true){
         $response = array(
           "result"=>true,

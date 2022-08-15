@@ -283,33 +283,26 @@
 						if(e.target.classList.contains('edit')){
 							console.log(1111);
 							let animal_no = e.target.parentElement.parentElement.getAttribute("animal_no");
+
+							const url = '/~testaki/known_animal_SPA/top/animal_db.php?update_animal=' + animal_no;
+							console.log(url);
+							const method = 'GET';
+							const formdata = new FormData(document.getElementById("uploadForm"));
+							const edit_result = await new WebApi({}).call(url,method);
+							console.log(edit_result);
+							let response = JSON.parse(edit_result);
+/*
 							const result_no = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_db.php","GET");
 							console.log(result_no);
-							console.log(999);
+							console.log(animal_no);
 							let response = JSON.parse(result_no);
 							if(response.result === true){
-								console.log(response.data[0]);
+								console.log(response.data[0][0]);
+
 						}
+						*/
 					}
 				});
-					/*
-					let edit_b = document.getElementById("edit22");
-					let close = document.getElementById("close");
-					let modal = document.getElementById("modal");
-					let modal_bg = document.getElementById("modal_bg");
-					let modal_title = document.getElementById("modal_title");
-
-					edit_b.addEventListener('click',function() {
-						modal.classList.remove("hidden");
-						modal_title.textContent = "更新";
-					}, false);
-					close.addEventListener('click',function() {
-						modal.classList.add("hidden")
-					}, false);
-					modal_bg.addEventListener('click',function() {
-						modal.classList.add("hidden")
-					}, false);
-*/
 				}
 
 				function _startup(){
