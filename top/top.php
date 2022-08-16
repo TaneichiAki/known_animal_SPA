@@ -277,13 +277,11 @@
 				}
 
 				function edit() {
-					let edit_b = document.getElementById("edit22");
-					console.log(edit_b);
 					document.getElementById("loop").addEventListener('click',async function(e){
 						if(e.target.classList.contains('edit')){
 							console.log(1111);
 							let animal_no = e.target.parentElement.parentElement.getAttribute("animal_no");
-
+							console.log(animal_no);
 							const url = '/~testaki/known_animal_SPA/top/animal_db.php?update_animal=' + animal_no;
 							console.log(url);
 							const method = 'GET';
