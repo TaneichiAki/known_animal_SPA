@@ -289,6 +289,9 @@
 							const edit_result = await new WebApi({}).call(url,method);
 							console.log(edit_result);
 							let response = JSON.parse(edit_result);
+							if(response.result === true){
+								console.log(response.data[0].name);
+							}
 /*
 							const result_no = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_db.php","GET");
 							console.log(result_no);
