@@ -239,7 +239,31 @@
 					}, false)
 				}
 
+				function check() {
+					let md_entry = document.getElementById("md_entry");
+
+					md_entry.addEventListener('click',async function test() {
+						let msg = ""
+						if(document.getElementById('animal_name').value == ""){
+							msg = '動物の名称を入力してください。';
+						}
+						if(document.getElementById('animal_family').value == ""){
+							msg =　msg + '\n何科か入力してください。';
+						}
+						if(document.getElementById('animal_features').value == ""){
+							msg =　msg + '\n特徴を入力してください。';
+						}
+						if(document.getElementById('animal_date').value == ""){
+							msg =　msg + '\n知った日を入力してください。';
+						}
+						if(msg != "") {
+							alert(msg);
+						}
+					}, false);
+				}
+
 				function entry() {
+					check();
 					let md_entry = document.getElementById("md_entry");
 
 					md_entry.addEventListener('click',async function test() {
