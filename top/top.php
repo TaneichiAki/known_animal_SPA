@@ -277,6 +277,10 @@
 				}
 
 				function edit() {
+					let close = document.getElementById("close");
+					let modal = document.getElementById("modal");
+					let modal_bg = document.getElementById("modal_bg");
+
 					document.getElementById("loop").addEventListener('click',async function(e){
 						if(e.target.classList.contains('edit')){
 							console.log(1111);
@@ -291,19 +295,24 @@
 							let response = JSON.parse(edit_result);
 							if(response.result === true){
 								console.log(response.data[0].name);
-							}
-/*
-							const result_no = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_db.php","GET");
-							console.log(result_no);
-							console.log(animal_no);
-							let response = JSON.parse(result_no);
-							if(response.result === true){
-								console.log(response.data[0][0]);
+								document.getElementById("animal_name").value = response.data[0].name;
+								document.getElementById("animal_family").value = response.data[0].family;
+								document.getElementById("animal_features").value = response.data[0].features;
+								document.getElementById("animal_date").value = response.data[0].date;
 
-						}
-						*/
+							}
+							modal.classList.remove("hidden");
+
+
 					}
 				});
+
+				close.addEventListener('click',() => {
+					modal.classList.add("hidden")
+				}, false);
+				modal_bg.addEventListener('click',() =>{
+					modal.classList.add("hidden")
+				}, false)
 				}
 
 				function _startup(){
