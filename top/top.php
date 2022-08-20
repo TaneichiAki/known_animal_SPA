@@ -228,22 +228,19 @@
 					let modal = document.getElementById("modal");
 					let modal_bg = document.getElementById("modal_bg");
 
+
 					new_entry.addEventListener('click',() => {
-						modal.classList.remove("hidden")
 					}, false);
+					modal.classList.remove("hidden")
 					close.addEventListener('click',() => {
 						modal.classList.add("hidden")
 					}, false);
 					modal_bg.addEventListener('click',() =>{
-						modal.classList.add("hidden")
 					}, false)
+					modal.classList.add("hidden")
 				}
 
 				function check() {
-					let md_entry = document.getElementById("md_entry");
-
-					md_entry.addEventListener('click',async function test() {
-						let msg = ""
 						if(document.getElementById('animal_name').value == ""){
 							msg = '動物の名称を入力してください。';
 						}
@@ -259,43 +256,26 @@
 						if(msg != "") {
 							alert(msg);
 						}
-					}, false);
 				}
 
 				function entry() {
-					check();
-					let md_entry = document.getElementById("md_entry");
-
+					let md_entry = document.getElementById("entry");
+					let msg = "";
 					md_entry.addEventListener('click',async function test() {
-						let msg = ""
-						if(document.getElementById('animal_name').value == ""){
-							msg = '動物の名称を入力してください。';
-						}
-						if(document.getElementById('animal_family').value == ""){
-							msg =　msg + '\n何科か入力してください。';
-						}
-						if(document.getElementById('animal_features').value == ""){
-							msg =　msg + '\n特徴を入力してください。';
-						}
-						if(document.getElementById('animal_date').value == ""){
-							msg =　msg + '\n知った日を入力してください。';
-						}
-						if(msg != "") {
-							alert(msg);
-						}else{
+						check();
+						if(msg == "") {
 							const url = '../animal_entry/entry.php';
 							const method = 'POST';
 							const formdata = new FormData(document.getElementById("uploadForm"));
 							const entry_result = await new WebApi({}).call(url,method,formdata);
-
-							console.log(entry_result);
-
 							let response = JSON.parse(entry_result);
 							if(response.result === true){
 								alert("登録しました！")
-								// キャッシュを無視してサーバーからリロード
-								window.location.reload(true);
+							}else{
+								alert('エラーが発生したため、登録できませんでした。');
 							}
+							// キャッシュを無視してサーバーからリロード
+							window.location.reload(true);
 						}
 					}, false);
 				}
