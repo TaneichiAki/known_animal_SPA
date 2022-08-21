@@ -13,11 +13,11 @@
   }
 
   try{
-    if(! isset($_REQUEST['update_animal'])){
+    if(! isset($_REQUEST['select_animal'])){
       $animals = animal_list();
 
     }else{
-      $animals = animal_select(update_animal);
+      $animals = animal_select(select_animal);
 
     }
     if($animals["result"] == true){

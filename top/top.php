@@ -50,7 +50,7 @@
 								<input class="form-control" id="animal_date" type="date" name="animal_date" placeholder="知った日">
 							</div>
 							<div class="col-12 p-2 text-center">
-								<input class="form-control" type="file" name="fileupload">
+								<input class="form-control" id ="fileup" type="file" name="fileupload">
 							</div>
 						</form>
 					</div>
@@ -211,9 +211,9 @@
 
 							let newElement_bt_d = document.createElement("button"); // div要素作成
 							newElement_bt_d.textContent = "削除";
-							newElement_bt_d.classList.add("btn","btn-primary");//クラス属性追加
-							newElement_bt_d.setAttribute("type","submit");
-							newElement_bt_d.setAttribute("onclick","window.open('/~testaki/known_animal_SPA/delete/delete.php?delete_animal="+ response.data[0][i].no +"','Delete','width=800,height=600')");
+							newElement_bt_d.classList.add("btn","btn-primary","delete");//クラス属性追加
+							newElement_bt_d.setAttribute("type","button");
+							//newElement_bt_d.setAttribute("onclick","window.open('/~testaki/known_animal_SPA/delete/delete.php?delete_animal="+ response.data[0][i].no +"','Delete','width=800,height=600')");
 							newElement3.appendChild(newElement_bt_d);
 						}
 
@@ -222,48 +222,53 @@
 					}
 				}
 
-				function new_entry() {
-					let new_entry = document.getElementById("entry");
-					let close = document.getElementById("close");
-					let modal = document.getElementById("modal");
-					let modal_bg = document.getElementById("modal_bg");
+				function entry() {
+					md_entry.textContent = "登録";
+					modal_title.textContent = "新規登録";
+					let animal_name = document.getElementById("animal_name");
+					let animal_family = document.getElementById("animal_family");
+					let animal_features = document.getElementById("animal_features");
+					let animal_date = document.getElementById("animal_date");
 
+					animal_name.value = "";
+					animal_family.value = "";
+					animal_features.value = "";
+					animal_date.value = "";
 
-					new_entry.addEventListener('click',() => {
-					}, false);
-					modal.classList.remove("hidden")
-					close.addEventListener('click',() => {
-						modal.classList.add("hidden")
-					}, false);
-					modal_bg.addEventListener('click',() =>{
-					}, false)
-					modal.classList.add("hidden")
+					animal_name.readOnly = false;
+					animal_family.readOnly = false;
+					animal_features.readOnly = false;
+					animal_date.readOnly = false;
+
+					modal.classList.remove("hidden");
 				}
 
 				function check() {
-						if(document.getElementById('animal_name').value == ""){
-							msg = '動物の名称を入力してください。';
-						}
-						if(document.getElementById('animal_family').value == ""){
-							msg =　msg + '\n何科か入力してください。';
-						}
-						if(document.getElementById('animal_features').value == ""){
-							msg =　msg + '\n特徴を入力してください。';
-						}
-						if(document.getElementById('animal_date').value == ""){
-							msg =　msg + '\n知った日を入力してください。';
-						}
-						if(msg != "") {
-							alert(msg);
-						}
+					let msg = "";
+					if(document.getElementById('animal_name').value == ""){
+						msg = '動物の名称を入力してください。';
+					}
+					if(document.getElementById('animal_family').value == ""){
+						msg =　msg + '\n何科か入力してください。';
+					}
+					if(document.getElementById('animal_features').value == ""){
+						msg =　msg + '\n特徴を入力してください。';
+					}
+					if(document.getElementById('animal_date').value == ""){
+						msg =　msg + '\n知った日を入力してください。';
+					}
+					if(msg != "") {
+						return msg;
+					}else{
+						return "";
+					}
 				}
 
-				function entry() {
-					let md_entry = document.getElementById("entry");
-					let msg = "";
-					md_entry.addEventListener('click',async function test() {
-						check();
-						if(msg == "") {
+				async function entry_done() {
+						let msg = check();
+						if(msg != "") {
+							alert(msg);
+						}else{
 							const url = '../animal_entry/entry.php';
 							const method = 'POST';
 							const formdata = new FormData(document.getElementById("uploadForm"));
@@ -277,46 +282,148 @@
 							// キャッシュを無視してサーバーからリロード
 							window.location.reload(true);
 						}
-					}, false);
+					}
+
+				async function edit_done() {
+						let msg = check();
+						if(msg != "") {
+							alert(msg);
+						}else{
+							let animal_no = document.getElementById("animal_name").getAttribute("animal_no");
+							console.log(animal_no);
+
+							const url = '../animal_edit/edit.php?update_animal=' + animal_no;
+							const method = 'POST';
+							const formdata = new FormData(document.getElementById("uploadForm"));
+							const edit_result = await new WebApi({}).call(url,method,formdata);
+							let response = JSON.parse(edit_result);
+							if(response.result === true){
+								alert("更新しました！")
+							}else{
+								alert('エラーが発生したため、更新できませんでした。');
+							}
+							// キャッシュを無視してサーバーからリロード
+							window.location.reload(true);
+						}
 				}
 
-				function edit() {
-					let close = document.getElementById("close");
-					let modal = document.getElementById("modal");
-					let modal_bg = document.getElementById("modal_bg");
-
-					document.getElementById("loop").addEventListener('click',async function(e){
+				async function edit(e) {
 						if(e.target.classList.contains('edit')){
 							console.log(1111);
 							let animal_no = e.target.parentElement.parentElement.getAttribute("animal_no");
 							console.log(animal_no);
-							const url = '/~testaki/known_animal_SPA/top/animal_db.php?update_animal=' + animal_no;
+							const url = '/~testaki/known_animal_SPA/top/animal_db.php?select_animal=' + animal_no;
 							console.log(url);
 							const method = 'GET';
-							const formdata = new FormData(document.getElementById("uploadForm"));
 							const edit_result = await new WebApi({}).call(url,method);
 							console.log(edit_result);
 							let response = JSON.parse(edit_result);
 							if(response.result === true){
 								console.log(response.data[0].name);
-								document.getElementById("animal_name").value = response.data[0].name;
-								document.getElementById("animal_family").value = response.data[0].family;
-								document.getElementById("animal_features").value = response.data[0].features;
-								document.getElementById("animal_date").value = response.data[0].date;
+								let animal_name = document.getElementById("animal_name");
+								let animal_family = document.getElementById("animal_family");
+								let animal_features = document.getElementById("animal_features");
+								let animal_date = document.getElementById("animal_date");
 
+								animal_name.value = response.data[0].name;
+								animal_family.value = response.data[0].family;
+								animal_features.value = response.data[0].features;
+								animal_date.value = response.data[0].date;
+
+								animal_name.readOnly = false;
+								animal_family.readOnly = false;
+								animal_features.readOnly = false;
+								animal_date.readOnly = false;
+
+								animal_name.setAttribute("animal_no",animal_no);
 							}
+							md_entry.textContent = "更新";
+							modal_title.textContent = "更新";
+
 							modal.classList.remove("hidden");
+						}
+				}
 
+				async function a_delete(e) {
+						if(e.target.classList.contains('delete')){
+							console.log(2222);
+							let animal_no = e.target.parentElement.parentElement.getAttribute("animal_no");
+							console.log(animal_no);
+							const url = '/~testaki/known_animal_SPA/top/animal_db.php?select_animal=' + animal_no;
+							console.log(url);
+							const method = 'GET';
+							const delete_result = await new WebApi({}).call(url,method);
+							console.log(delete_result);
+							let response = JSON.parse(delete_result);
+							if(response.result === true){
+								console.log(response.data[0].name);
+								let animal_name = document.getElementById("animal_name");
+								let animal_family = document.getElementById("animal_family");
+								let animal_features = document.getElementById("animal_features");
+								let animal_date = document.getElementById("animal_date");
 
+								animal_name.value = response.data[0].name;
+								animal_family.value = response.data[0].family;
+								animal_features.value = response.data[0].features;
+								animal_date.value = response.data[0].date;
+
+								animal_name.readOnly = true;
+								animal_family.readOnly = true;
+								animal_features.readOnly = true;
+								animal_date.readOnly = true;
+
+								animal_name.setAttribute("animal_no",animal_no);
+							}
+							md_entry.textContent = "削除";
+							modal_title.textContent = "このデータを削除しますか？";
+							fileup.classList.add("hidden");
+							modal.classList.remove("hidden");
+						}
+				}
+
+				function bind() {
+					let new_entry = document.getElementById("entry");
+					let close = document.getElementById("close");
+					let modal = document.getElementById("modal");
+					let modal_bg = document.getElementById("modal_bg");
+					let md_entry = document.getElementById("md_entry");
+					let modal_title = document.getElementById("modal_title");
+					let fileup = document.getElementById("fileup");
+
+					//新規登録ボタン押下
+					new_entry.addEventListener('click',() => {
+						entry()
+					}, false);
+					//閉じるボタン押下
+					close.addEventListener('click',() => {
+						modal.classList.add("hidden");
+						if(fileup.classList.contains("hidden") == true){
+							fileup.classList.remove("hidden")};
+					}, false);
+					//モーダル外押下
+					modal_bg.addEventListener('click',() =>{
+						modal.classList.add("hidden")
+						if(fileup.classList.contains("hidden") == true){
+							fileup.classList.remove("hidden")};
+					}, false);
+					//登録ボタン押下後
+					md_entry.addEventListener('click',() => {
+						if(md_entry.textContent == "登録"){
+						entry_done();
+					}else if(md_entry.textContent == "更新"){
+						edit_done();
+					}else{
+						delete_done();
 					}
-				});
-
-				close.addEventListener('click',() => {
-					modal.classList.add("hidden")
-				}, false);
-				modal_bg.addEventListener('click',() =>{
-					modal.classList.add("hidden")
-				}, false)
+					}, false);
+					//更新ボタン押下後
+					document.getElementById("loop").addEventListener('click', function(e) {
+						edit(e);
+					},false);
+					//削除ボタン押下後
+					document.getElementById("loop").addEventListener('click', function(e) {
+						a_delete(e);
+					},false);
 				}
 
 				function _startup(){
@@ -324,14 +431,9 @@
 						lc.show();
 						user_get();
 						animal_get();
-						new_entry();
-						entry();
-						edit();
+						bind();
 						lc.hide();
-
-
 					}
-
 				}
 				return {startup:_startup}
 			})();
