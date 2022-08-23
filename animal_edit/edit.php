@@ -8,8 +8,6 @@
     $response = array(
       "s_result"=>false
     );
-    //echo json_encode($response);
-    //exit;
   }
 
   try{

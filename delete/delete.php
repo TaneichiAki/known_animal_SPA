@@ -1,86 +1,35 @@
 <?php
-	require_once(__DIR__."/../classes/Dao.php");
-	require_once(__DIR__."/../classes/constants.php");
-	require_once(__DIR__."/../classes/knownAnimalBase.php");
+  require_once(__DIR__."/../classes/Dao.php");
+  require_once(__DIR__."/../classes/constants.php");
 
+  session_start();
+  //セッションIDがセットされていなかったらログインページに戻る
+  if(! isset($_SESSION['login'])){
+    $response = array(
+      "s_result"=>false
+    );
+  }
 
-	class Delete extends KnownAnimalBase{
-		//初回処理
-	  protected function prologue(){
-			//TOPページから受け取ったNoを使って削除対象の動物を抽出
-			$select_sql = 'select * from animal inner join users on users.id = animal.memberid where no = ?';
-			$animal = Dao::db()->show_one_row($select_sql,array($_REQUEST['delete_animal']));
-			//ここはGLOBALSを使ったこの定義で良いのか？
-			$GLOBALS['select_animal']=$animal['data']['name'];
-			$GLOBALS['select_family']=$animal['data']['family'];
-			$GLOBALS['select_features']=$animal['data']['features'];
-			$GLOBALS['select_date']=$animal['data']['date'];
-			$GLOBALS['select_no']=$animal['data']['no'];
-		}
-		//POST時処理
-		protected function post(){
-			//対象の動物情報をデータベースから削除
-			$delete_sql = 'delete from animal where no = ?';
-			$delete_animal = Dao::db()->mod_exec($delete_sql,array($_REQUEST['delete_exec_animal']));
-			//下記ページに遷移する
-			header ('Location:'.Constants:: DELETE_DONE_URL);
-			exit;
-		}
-	  //GET時処理
-	  protected function get(){}
-	  //登録処理
-	  protected function entry(){}
-	  //終了前処理
-	  protected function epilogue(){}
+  try{
+		$delete_sql = 'delete from animal where no = ?';
+		$delete_animal = Dao::db()->mod_exec($delete_sql,array($_REQUEST['delete_animal']));
 
-	}
+    if($delete_animal["result"] == true){
+        $response = array(
+          "result"=>true
+        );
+        echo json_encode($response);
+				//登録していた画像ファイルを削除
+				unlink(Constants::ANIMAL_PHOTO_SERVER.$_REQUEST['delete_animal'].'_animal.jpg' );
+    }else{
+      $response = array(
+        "result"=>false
+      );
+      echo json_encode($response);
+    }
+  }catch(PDOException $e){
+    print('Error:'.$e->getMessage());
+    die();
+  }
 
-	$obj = new Delete();
-	/**
-	*メイン処理実行
-	*/
-	$obj->main();
-
-?>
-<!DOCTYPE html>
-<html lang="ja">
-	<head>
-		<meta charset="utf-8">
-		<!-- Required meta tags -->
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-		<!-- Bootstrap CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-		<title>削除</title>
-	</head>
-	<body>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="offset-2 col-8 text-center mt-5">
-					<h6>このデータを削除しますか？</h6>
-					<br>
-				</div>
-			</div>
-			<div class="row">
-				<div class="offset-2 col-8 text-center mt-3 mb-3">
-					<table class="table table-bordered border-secondary">
-						<tr><th class="table-primary border-secondary">名称</th><td><?php echo $select_animal ?></td></tr>
-						<tr><th class="table-primary border-secondary">科</th><td><?php echo $select_family ?></td></tr>
-						<tr><th class="table-primary border-secondary">特徴</th><td><?php echo $select_features ?></td></tr>
-						<tr><th class="table-primary border-secondary">知った日</th><td><?php echo $select_date ?></td></tr>
-					</table>
-				</div>
-			</div>
-			<div class="row">
-				<div class="offset-2 col-8 text-center mt-3 mb-3">
-					<form method="post">
-						<button class="col-4 btn btn-primary btn-sm mt-2 mb-3" type="submit">削除</button>
-						<input type = "hidden" name = "delete_exec_animal"  value = "<?= $select_no ?>">
-					</form>
-				</div>
-			</div>
-		</div>
-	</body>
-</html>
+ ?>
