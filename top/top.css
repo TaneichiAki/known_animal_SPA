@@ -1,9 +1,11 @@
 <meta charset="utf-8">
 .account{
-	width: 98%;
-  	text-align : right;
 	font-size: 15px;
   	}
+
+.logout{
+	margin-right: 10px;
+}
 
 br {
 	display: block;
