@@ -76,7 +76,8 @@
 			    <span class="navbar-toggler-icon"></span>
 			  </button>
 			  <!-- ナビゲーションメニュー -->
-			  <div class="collapse navbar-collapse" id="navbarNav">
+			 <!--
+			 <div class="collapse navbar-collapse" id="navbarNav">
 			    <ul class="navbar-nav">
 			      <li class="nav-item active">
 			        <a class="nav-link" id="entry">新規登録</a>
@@ -86,6 +87,7 @@
 			      </li>
 					</ul>
 				</div>
+			-->
 							<form name="logout" class="logout" method="get" action="">
 								<button type="button" class="btn btn-primary" id="logout">ログアウト</button>
 								<input type="hidden" id="hidden" name="btn_logout" value="ログアウト">
@@ -112,6 +114,19 @@
 			<p class="account">
 			</p>
 			</div>
+		</div>
+		<div class="row" id="navbarNav">
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link active">TOP</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href='<?php echo Constants::USER_EDIT_URL?>'>ユーザー情報の編集</a>
+				</li>
+			</ul>
+		</div>
+		<div class="row mt-5 mb-5">
+			<button type="button" class="btn btn-primary offset-5 col-2" id="entry">新規登録</button>
 		</div>
 			<div class="row">
 				<div class="card-group" id="loop">
