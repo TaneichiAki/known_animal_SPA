@@ -63,73 +63,195 @@
 		</section>
 
 		<div class="container-fluid">
-		<div class="row mb-2">
-		<header>
-			<!-- ナビゲーションバー -->
-			<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-			  <!-- タイトル -->
-			  <a class="navbar-brand" href="#">
-					<img src="../image/KnownAnimalLogo.png" width="180" height="auto" class="d-inline-block align-top" alt="">
-				</a>
-			  <!-- ハンバーガーメニュー -->
-			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			    <span class="navbar-toggler-icon"></span>
-			  </button>
-			  <!-- ナビゲーションメニュー -->
-			 <!--
-			 <div class="collapse navbar-collapse" id="navbarNav">
-			    <ul class="navbar-nav">
-			      <li class="nav-item active">
-			        <a class="nav-link" id="entry">新規登録</a>
-			      </li>
-			      <li class="nav-item">
-			        <a class="nav-link" href='<?php echo Constants::USER_EDIT_URL?>'>ユーザー情報の編集</a>
-			      </li>
-					</ul>
-				</div>
-			-->
-							<form name="logout" class="logout" method="get" action="">
-								<button type="button" class="btn btn-primary" id="logout">ログアウト</button>
-								<input type="hidden" id="hidden" name="btn_logout" value="ログアウト">
-							 </form>
-							 <script>
-							  var a_link = document.getElementById("logout");
+			<div class="row mb-2">
+			<header>
+				<!-- ナビゲーションバー -->
+				<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+				  <!-- タイトル -->
+				  <a class="navbar-brand" href="#">
+						<img src="../image/KnownAnimalLogo.png" width="180" height="auto" class="d-inline-block align-top" alt="">
+					</a>
+				  <!-- ハンバーガーメニュー -->
+				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				    <span class="navbar-toggler-icon"></span>
+				  </button>
+				  <!-- ナビゲーションメニュー -->
+				 <!--
+				 <div class="collapse navbar-collapse" id="navbarNav">
+				    <ul class="navbar-nav">
+				      <li class="nav-item active">
+				        <a class="nav-link" id="entry">新規登録</a>
+				      </li>
+				      <li class="nav-item">
+				        <a class="nav-link" href='<?php echo Constants::USER_EDIT_URL?>'>ユーザー情報の編集</a>
+				      </li>
+						</ul>
+					</div>
+				-->
+								<form name="logout" class="logout" method="get" action="">
+									<button type="button" class="btn btn-primary" id="logout">ログアウト</button>
+									<input type="hidden" id="hidden" name="btn_logout" value="ログアウト">
+								 </form>
+								 <script>
+								  var a_link = document.getElementById("logout");
 
-							  a_link.addEventListener('click', function() {
-							    //submit()でフォームの内容を送信
-							    document.logout.submit();
-							  })
-								console.dir(document.getElementById("hidden"));
-							</script>
-			</nav>
-		</header>
-		</div>
-		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
- 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
- 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-
-		<div class="row mt-5 mb-2">
-			<div class="offset-sm-10 col-sm-2">
-			<br>
-			<p class="account">
-			</p>
+								  a_link.addEventListener('click', function() {
+								    //submit()でフォームの内容を送信
+								    document.logout.submit();
+								  })
+									console.dir(document.getElementById("hidden"));
+								</script>
+				</nav>
+			</header>
 			</div>
-		</div>
-		<div class="row" id="navbarNav">
-			<ul class="nav nav-tabs">
-				<li class="nav-item">
-					<a class="nav-link active">TOP</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href='<?php echo Constants::USER_EDIT_URL?>'>ユーザー情報の編集</a>
-				</li>
-			</ul>
-		</div>
-		<div class="row mt-5 mb-5">
-			<button type="button" class="btn btn-primary offset-5 col-2" id="entry">新規登録</button>
-		</div>
-			<div class="row">
-				<div class="card-group" id="loop">
+			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+			<div class="row mt-5 mb-2">
+				<div class="offset-sm-10 col-sm-2">
+				<br>
+				<p class="account">
+				</p>
+				</div>
+			</div>
+			<div class="row" id="navbarNav">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a  href="#contents1" id="top_tab" class="nav-link active" data-toggle="tab">TOP</a>
+					</li>
+					<li class="nav-item">
+						<a  href="#contents2" id="user_edit_tab" class="nav-link" data-toggle="tab" href='<?php echo Constants::USER_EDIT_URL?>'>ユーザー情報の編集</a>
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content">
+	    	<div id="contents1" class="tab-pane active">
+					<div class="row mt-5 mb-5">
+						<button type="button" class="btn btn-primary offset-10 col-1" id="entry">新規登録</button>
+					</div>
+					<div class="row">
+						<div class="card-group" id="loop">
+						</div>
+					</div>
+				</div>
+				<div id="contents2" class="tab-pane active">
+					<div class="row">
+						<div class="offset-1 col-10 offset-md-3 col-md-6 text-center mt-3">
+							<h4>ユーザー情報</h4>
+						</div>
+					</div>
+						<div class="table-responsive col-12 offset-md-3 col-md-6 text-center mt-3 mb-3">
+						<table class="table table-sm table-striped table-bordered">
+							<thead>
+							<tr class="bg-secondary text-white">
+								<th style="width: 20%">項目</th>
+								<th style="width: 60%">登録データ</th>
+								<th style="width: 20%"></th>
+							</tr>
+						</thead>
+							<tr>
+								<th>会員番号</th>
+								<td>
+									<?php
+									echo $user['data']['id'];
+									?>
+								</td>
+								<td>
+								</td>
+							</tr>
+							<tr>
+								<th>ユーザーID</th>
+								<td>
+									<?php
+										echo $user['data']['user_id'];
+									?>
+								</td>
+								<td>
+								</td>
+							 </tr>
+							 <tr>
+								<th>姓</th>
+								<td>
+									<?php
+										echo $user['data']['last_name'];
+									?>
+								</td>
+								<td>
+									<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::LAST_NAME_EDIT_URL?>'">変更</button>
+								</td>
+								</tr>
+								<tr>
+									<th>名</th>
+									<td>
+										<?php
+											echo $user['data']['first_name'];
+										?>
+									</td>
+									<td>
+										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::FIRST_NAME_EDIT_URL?>'">変更</button>
+									</td>
+								</tr>
+								<tr>
+									<th>部署</th>
+									<td>
+										<?php
+											echo $user['data']['department'];
+										?>
+									</td>
+									<td>
+										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::DEPARTMENT_EDIT_URL?>'">変更</button>
+									</td>
+								</tr>
+								<tr>
+									<th>役職</th>
+									<td>
+										<?php
+											echo $user['data']['post'];
+										?>
+									</td>
+									<td>
+										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::POST_EDIT_URL?>'">変更</button>
+									</td>
+								</tr>
+								<tr>
+									<th>生年月日</th>
+									<td>
+										<?php
+											echo $user['data']['birth'];
+										?>
+									</td>
+									<td>
+										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::BIRTH_EDIT_URL?>'">変更</button>
+									</td>
+								</tr>
+								<tr>
+									<th>メールアドレス</th>
+									<td>
+										<?php
+											echo $user['data']['mail'];
+										?>
+									</td>
+									<td>
+										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::MAIL_EDIT_URL?>'">変更</button>
+									</td>
+								</tr>
+								<tr>
+									<th>パスワード</th>
+									<td>
+										<?php
+											echo '********';
+										?>
+									</td>
+									<td>
+										<button  class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::PASS_CHANGE_URL?>'">変更</button>
+									</td>
+								</tr>
+						</table>
+				</div>
+				<div class="row">
+						<button  class="offset-3 col-6 offset-md-5 col-md-2 btn btn-primary btn-sm mt-2 mb-3"　type="button" onclick="location.href='<?php echo Constants::TOP_URL?>'">トップページへ戻る</button>
+				</div>
 				</div>
 			</div>
 		</div>
@@ -359,6 +481,7 @@
 					let animal_family = document.getElementById("animal_family");
 					let animal_features = document.getElementById("animal_features");
 					let animal_date = document.getElementById("animal_date");
+					let user_tab = document.getElementById("user_edit_tab");
 
 					//新規登録ボタン押下
 					new_entry.addEventListener('click',() => {
@@ -412,7 +535,6 @@
 							modal.classList.remove("hidden");
 						}
 					},false);
-
 				}
 
 				function _startup(){
