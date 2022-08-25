@@ -58,8 +58,16 @@
 							<div id="user_modal" class="hidden">
 								<form method="post" id="userForm">
 									<div class="col-12 mt-3 p-2">
+										<label class="form-label mb-2" id="old_pass_label" for="old_pass" class="control-label hidden">現在のパスワード:</label>
+										<input class="form-control" id="old_pass" name="old_pass_check">
+									</div>
+									<div class="col-12 mt-3 p-2">
 										<label class="form-label mb-2" id="user_label" for="user_edit" class="control-label"></label>
 										<input class="form-control" id="user_edit" name="user_up">
+									</div>
+									<div class="col-12 mt-3 p-2">
+										<label class="form-label mb-2" id="re_new_pass_label" for="re_new_pass" class="control-label hidden">新しいパスワード:</label>
+										<input class="form-control" id="re_new_pass" name="re_new_pass_check"　placeholder="もう一度入力してください">
 									</div>
 								</form>
 							</div>
@@ -330,10 +338,8 @@
 						/*
 						if(edit_target == "pass_btn"){
 							user_edit.setAttribute("type","password");
-							user_edit.setAttribute("placeholder","新しいメールアドレス");
 							user_edit.setAttribute("edit_info","pass");
-							user_edit.value = response.data[0].mail;
-							user_label.textContent = "新しいメールアドレス:";
+							user_label.textContent = "新しいパスワード:";
 						}
 						*/
 					}catch(e){
