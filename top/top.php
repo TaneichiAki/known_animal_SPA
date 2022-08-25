@@ -224,13 +224,13 @@
 								</tr>
 								<tr>
 									<th>パスワード</th>
-									<td>
+									<td id="pass">
 										<?php
 											echo '********';
 										?>
 									</td>
 									<td>
-										<button  class="btn btn-primary btn-sm user_info"　type="submit" onclick="location.href='<?php echo Constants::PASS_CHANGE_URL?>'">変更</button>
+										<button id="pass_btn" class="btn btn-primary btn-sm user_info"　type="submit" onclick="location.href='<?php echo Constants::PASS_CHANGE_URL?>'">変更</button>
 									</td>
 								</tr>
 						</table>
@@ -327,6 +327,15 @@
 							user_edit.value = response.data[0].mail;
 							user_label.textContent = "新しいメールアドレス:";
 						}
+						/*
+						if(edit_target == "pass_btn"){
+							user_edit.setAttribute("type","password");
+							user_edit.setAttribute("placeholder","新しいメールアドレス");
+							user_edit.setAttribute("edit_info","pass");
+							user_edit.value = response.data[0].mail;
+							user_label.textContent = "新しいメールアドレス:";
+						}
+						*/
 					}catch(e){
 							let err = e;
 							console.log(err.message);
@@ -351,7 +360,6 @@
 						alert(msg);
 					}else{
 						let edit_info = document.getElementById("user_edit").getAttribute("edit_info");
-
 						const url = '../user_edit/user_info_edit.php?update_info=' + edit_info;
 						console.log(edit_info);
 						console.log(url);
