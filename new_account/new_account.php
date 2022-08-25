@@ -145,7 +145,7 @@
 						<div class="offset-2 col-8 mt-3">
 							<label for="user_id" class="control-label">ユーザーID</label>
 							<input type="text" class="form-control" name="user_id" placeholder="ユーザーID">
-							<!-条件：他の人が使っているユーザー名でないこと->
+							<!--条件：他の人が使っているユーザー名でないこと-->
 						</div>
 					</div>
 					<div class="row">

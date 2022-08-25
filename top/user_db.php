@@ -20,6 +20,7 @@
     if($users["result"] == true){
       $response = array(
         "result"=>true,
+        "data"=>array($users['data']),
         "user"=>array(
           "firstname"=>$users['data']['first_name'],
           "lastname"=>$users['data']['last_name']

@@ -35,24 +35,34 @@
 			<div class="__modal__wrapper">
 				<div class="__modal__contents">
 					<div class="row">
-						<form method="post" id="uploadForm">
-							<div id="modal_title" class="col-12 p-2 text-center"></div>
-							<div class="col-12 p-2 text-center">
-								<input class="form-control" id="animal_name" type="text" name="animal_name" placeholder="動物の名称">
+						<div id="modal_title" class="col-12 p-2 text-center"></div>
+							<div id="animal_modal" class="hidden">
+								<form method="post" id="uploadForm">
+									<div class="col-12 p-2 text-center">
+										<input class="form-control" id="animal_name" type="text" name="animal_name" placeholder="動物の名称">
+									</div>
+									<div class="col-12 p-2 text-center">
+										<input class="form-control" id="animal_family" type="text" name="animal_family" placeholder="何科">
+									</div>
+									<div class="col-12 p-2 text-center">
+										<input class="form-control" id="animal_features" type="text" name="animal_features" placeholder="特徴">
+									</div>
+									<div class="col-12 p-2 text-center">
+										<input class="form-control" id="animal_date" type="date" name="animal_date" placeholder="知った日">
+									</div>
+									<div class="col-12 p-2 text-center">
+										<input class="form-control" id ="fileup" type="file" name="fileupload">
+									</div>
+								</form>
 							</div>
-							<div class="col-12 p-2 text-center">
-								<input class="form-control" id="animal_family" type="text" name="animal_family" placeholder="何科">
+							<div id="user_modal" class="hidden">
+								<form method="post" id="userForm">
+									<div class="col-12 mt-3 p-2">
+										<label class="form-label mb-2" id="user_label" for="user_edit" class="control-label"></label>
+										<input class="form-control" id="user_edit" name="user_up">
+									</div>
+								</form>
 							</div>
-							<div class="col-12 p-2 text-center">
-								<input class="form-control" id="animal_features" type="text" name="animal_features" placeholder="特徴">
-							</div>
-							<div class="col-12 p-2 text-center">
-								<input class="form-control" id="animal_date" type="date" name="animal_date" placeholder="知った日">
-							</div>
-							<div class="col-12 p-2 text-center">
-								<input class="form-control" id ="fileup" type="file" name="fileupload">
-							</div>
-						</form>
 					</div>
 					<div class="__modal__buttons">
 						<button id="close" class="__modal__button __modal__close__btn">閉じる</botton>
@@ -116,7 +126,7 @@
 				</div>
 			</div>
 			<div class="row" id="navbarNav">
-				<ul class="nav nav-tabs">
+				<ul class="nav nav-tabs nav-justified">
 					<li class="nav-item">
 						<a  href="#contents1" id="top_tab" class="nav-link active" data-toggle="tab">TOP</a>
 					</li>
@@ -135,7 +145,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="contents2" class="tab-pane active">
+				<div id="contents2" class="tab-pane">
 					<div class="row">
 						<div class="offset-1 col-10 offset-md-3 col-md-6 text-center mt-3">
 							<h4>ユーザー情報</h4>
@@ -152,88 +162,64 @@
 						</thead>
 							<tr>
 								<th>会員番号</th>
-								<td>
-									<?php
-									echo $user['data']['id'];
-									?>
+								<td id="id">
 								</td>
 								<td>
 								</td>
 							</tr>
 							<tr>
 								<th>ユーザーID</th>
-								<td>
-									<?php
-										echo $user['data']['user_id'];
-									?>
+								<td id="user_id">
 								</td>
 								<td>
 								</td>
 							 </tr>
 							 <tr>
 								<th>姓</th>
-								<td>
-									<?php
-										echo $user['data']['last_name'];
-									?>
+								<td id="last_name">
 								</td>
 								<td>
-									<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::LAST_NAME_EDIT_URL?>'">変更</button>
+									<button id="last_name_btn" class="btn btn-primary btn-sm user_info" type="button">変更</button>
 								</td>
 								</tr>
 								<tr>
 									<th>名</th>
-									<td>
-										<?php
-											echo $user['data']['first_name'];
-										?>
+									<td id="first_name">
 									</td>
 									<td>
-										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::FIRST_NAME_EDIT_URL?>'">変更</button>
+										<button id="first_name_btn" class="btn btn-primary btn-sm user_info" type="button">変更</button>
 									</td>
 								</tr>
 								<tr>
 									<th>部署</th>
-									<td>
-										<?php
-											echo $user['data']['department'];
-										?>
+									<td id="department">
 									</td>
 									<td>
-										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::DEPARTMENT_EDIT_URL?>'">変更</button>
+										<button id="department_btn" class="btn btn-primary btn-sm user_info" type="button">変更</button>
 									</td>
 								</tr>
 								<tr>
 									<th>役職</th>
-									<td>
-										<?php
-											echo $user['data']['post'];
-										?>
+									<td id="post">
 									</td>
 									<td>
-										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::POST_EDIT_URL?>'">変更</button>
+										<button id="post_btn" class="btn btn-primary btn-sm user_info" type="button">変更</button>
 									</td>
 								</tr>
 								<tr>
 									<th>生年月日</th>
-									<td>
-										<?php
-											echo $user['data']['birth'];
-										?>
+									<td id="birth">
 									</td>
 									<td>
-										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::BIRTH_EDIT_URL?>'">変更</button>
+										<button id="birth_btn" class="btn btn-primary btn-sm user_info" type="button">変更</button>
 									</td>
 								</tr>
 								<tr>
 									<th>メールアドレス</th>
-									<td>
-										<?php
-											echo $user['data']['mail'];
-										?>
+									<td id="mail">
 									</td>
 									<td>
-										<button class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::MAIL_EDIT_URL?>'">変更</button>
+										<button id="mail_btn" class="btn btn-primary btn-sm user_info" type="button">変更</button>
 									</td>
 								</tr>
 								<tr>
@@ -244,13 +230,10 @@
 										?>
 									</td>
 									<td>
-										<button  class="btn btn-primary btn-sm"　type="submit" onclick="location.href='<?php echo Constants::PASS_CHANGE_URL?>'">変更</button>
+										<button  class="btn btn-primary btn-sm user_info"　type="submit" onclick="location.href='<?php echo Constants::PASS_CHANGE_URL?>'">変更</button>
 									</td>
 								</tr>
 						</table>
-				</div>
-				<div class="row">
-						<button  class="offset-3 col-6 offset-md-5 col-md-2 btn btn-primary btn-sm mt-2 mb-3"　type="button" onclick="location.href='<?php echo Constants::TOP_URL?>'">トップページへ戻る</button>
 				</div>
 				</div>
 			</div>
@@ -263,17 +246,132 @@
 				async function user_get(){
 					try{
 						const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
-
 						let response = JSON.parse(result);
+
 						if(response.result == true){
 							let user_name = document.getElementsByClassName('account');
-							user_name[0].textContent = 'ようこそ！'+ response.user.firstname + 'さん';
+							let id = document.getElementById('id');
+							let user_id = document.getElementById('user_id')
+							let last_name = document.getElementById('last_name')
+							let first_name = document.getElementById('first_name')
+							let department = document.getElementById('department')
+							let post = document.getElementById('post')
+							let birth = document.getElementById('birth')
+							let mail = document.getElementById('mail')
+
+							user_name[0].textContent = 'ようこそ！'+ response.data[0].first_name + 'さん';
+							id.textContent = response.data[0].id;
+							user_id.textContent = response.data[0].user_id;
+							last_name.textContent = response.data[0].last_name;
+							first_name.textContent = response.data[0].first_name;
+							department.textContent = response.data[0].department;
+							post.textContent = response.data[0].post;
+							birth.textContent = response.data[0].birth;
+							mail.textContent = response.data[0].mail;
+
 						}else{
 							window.location.href = '/~testaki/known_animal_SPA/login/login.php';
 						}
 					}catch(e){
 							let err = e;
 							console.log(err.message);
+					}
+				}
+
+				async function part_of_user_get(e) {
+					try{
+						let edit_target = e.target.id;
+						const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
+						let response = JSON.parse(result);
+						let user_edit = document.getElementById("user_edit");
+						let user_label = document.getElementById("user_label");
+						if(edit_target == "last_name_btn"){
+							user_edit.setAttribute("placeholder","新しい姓");
+							user_edit.setAttribute("type","text");
+							user_edit.setAttribute("edit_info","last_name");
+							user_edit.value = response.data[0].last_name;
+							user_label.textContent = "新しい姓:";
+						}
+						if(edit_target == "first_name_btn"){
+							user_edit.setAttribute("placeholder","新しい名");
+							user_edit.setAttribute("type","text");
+							user_edit.setAttribute("edit_info","first_name");
+							user_edit.value = response.data[0].first_name;
+							user_label.textContent = "新しい名:";
+						}
+						if(edit_target == "department_btn"){
+							user_edit.setAttribute("placeholder","新しい部署名");
+							user_edit.setAttribute("type","text");
+							user_edit.setAttribute("edit_info","department");
+							user_edit.value = response.data[0].department;
+							user_label.textContent = "新しい部署名:";
+						}
+						if(edit_target == "post_btn"){
+							user_edit.setAttribute("type","text");
+							user_edit.setAttribute("placeholder","新しい役職名");
+							user_edit.setAttribute("edit_info","post");
+							user_edit.value = response.data[0].post;
+							user_label.textContent = "新しい役職名:";
+						}
+						if(edit_target == "birth_btn"){
+							user_edit.setAttribute("type","date");
+							user_edit.setAttribute("placeholder","新しい生年月日");
+							user_edit.setAttribute("edit_info","birth");
+							user_edit.value = response.data[0].birth;
+							user_label.textContent = "新しい生年月日:";
+						}
+						if(edit_target == "mail_btn"){
+							user_edit.setAttribute("type","email");
+							user_edit.setAttribute("placeholder","新しいメールアドレス");
+							user_edit.setAttribute("edit_info","mail");
+							user_edit.value = response.data[0].mail;
+							user_label.textContent = "新しいメールアドレス:";
+						}
+					}catch(e){
+							let err = e;
+							console.log(err.message);
+					}
+				}
+
+				function user_edit_check() {
+					let msg = "";
+					if(document.getElementById('user_edit').value == ""){
+						msg = '更新後の内容を入力してください。';
+					}
+					if(msg != "") {
+						return msg;
+					}else{
+						return "";
+					}
+				}
+
+				async function user_edit_done() {
+					let msg = user_edit_check();
+					if(msg != "") {
+						alert(msg);
+					}else{
+						let edit_info = document.getElementById("user_edit").getAttribute("edit_info");
+
+						const url = '../user_edit/user_info_edit.php?update_info=' + edit_info;
+						console.log(edit_info);
+						console.log(url);
+						const method = 'POST';
+						const formdata = new FormData(document.getElementById("userForm"));
+						console.log(formdata);
+						const edit_result = await new WebApi({}).call(url,method,formdata);
+						let response = JSON.parse(edit_result);
+						console.log(response);
+						if(response.result === true){
+							alert("更新しました！");
+						}else if(response.result === "mail_true"){
+							alert("登録したメールアドレスに登録完了のメールを送りました。\nメールの受信をご確認ください。");
+						}else if(response.result === "mail_false"){
+							alert("メール送信失敗です");
+						}else{
+							alert('エラーが発生したため、更新できませんでした。');
+						}
+						// キャッシュを無視してサーバーからリロード
+						window.location.reload(true);
 					}
 				}
 
@@ -364,6 +462,7 @@
 					animal_features.readOnly = false;
 					animal_date.readOnly = false;
 
+					animal_modal.classList.remove("hidden");
 					modal.classList.remove("hidden");
 				}
 
@@ -425,6 +524,7 @@
 							const url = '../animal_edit/edit.php?update_animal=' + select_a_no;
 							const method = 'POST';
 							const formdata = new FormData(document.getElementById("uploadForm"));
+							console.log(formdata);
 							const edit_result = await new WebApi({}).call(url,method,formdata);
 							let response = JSON.parse(edit_result);
 							if(response.result === true){
@@ -482,36 +582,48 @@
 					let animal_features = document.getElementById("animal_features");
 					let animal_date = document.getElementById("animal_date");
 					let user_tab = document.getElementById("user_edit_tab");
+					let animal_modal = document.getElementById("animal_modal");
+					let user_modal = document.getElementById("user_modal");
 
-					//新規登録ボタン押下
+					//TOPタブの新規登録ボタン押下
 					new_entry.addEventListener('click',() => {
 						entry()
 					}, false);
-					//閉じるボタン押下
+					//モーダルの閉じるボタン押下
 					close.addEventListener('click',() => {
 						modal.classList.add("hidden");
+						animal_modal.classList.add("hidden");
+						user_modal.classList.add("hidden");
 						if(fileup.classList.contains("hidden") == true){
 							fileup.classList.remove("hidden")};
 					}, false);
 					//モーダル外押下
 					modal_bg.addEventListener('click',() =>{
 						modal.classList.add("hidden")
+						animal_modal.classList.add("hidden");
+						user_modal.classList.add("hidden");
 						if(fileup.classList.contains("hidden") == true){
 							fileup.classList.remove("hidden")};
 					}, false);
-					//登録ボタン押下後
+
 					md_entry.addEventListener('click',() => {
-						if(md_entry.textContent == "登録"){
-						entry_done();
-					}else if(md_entry.textContent == "更新"){
-						edit_done();
-					}else{
-						delete_done();
-					}
+						//モーダルの登録ボタン押下後
+						if(modal_title.textContent == "新規登録"){
+							entry_done();
+						//モーダルの更新ボタン押下後
+						}else if(modal_title.textContent == "更新"){
+							edit_done();
+						//モーダルの削除ボタン押下後
+						}else if(modal_title.textContent == "このデータを削除しますか？"){
+							delete_done();
+						//ユーザー情報の編集モーダルの更新ボタン押下後
+						}else{
+							user_edit_done();
+						}
 					}, false);
 
 					document.getElementById("loop").addEventListener('click', function(e) {
-						//更新ボタン押下後
+						//TOPタブの更新ボタン押下後
 						if(e.target.classList.contains('edit')){
 							animal_get(e);
 							animal_name.readOnly = false;
@@ -520,9 +632,10 @@
 							animal_date.readOnly = false;
 							md_entry.textContent = "更新";
 							modal_title.textContent = "更新";
+							animal_modal.classList.remove("hidden");
 							modal.classList.remove("hidden");
 						}
-						//削除ボタン押下後
+						//TOPタブの削除ボタン押下後
 						if(e.target.classList.contains('delete')){
 							animal_get(e);
 							animal_name.readOnly = true;
@@ -531,10 +644,22 @@
 							animal_date.readOnly = true;
 							md_entry.textContent = "削除";
 							modal_title.textContent = "このデータを削除しますか？";
+							animal_modal.classList.remove("hidden");
 							fileup.classList.add("hidden");
 							modal.classList.remove("hidden");
 						}
 					},false);
+					//ユーザー情報の編集タブの変更ボタン押下
+					let user_info = document.querySelectorAll('.user_info');
+					user_info.forEach(function(userInfo){
+						userInfo.addEventListener('click', (e) => {
+							part_of_user_get(e);
+							md_entry.textContent = "更新";
+							modal_title.textContent = "ユーザー情報の編集";
+							user_modal.classList.remove("hidden");
+							modal.classList.remove("hidden");
+						}, false)
+					})
 				}
 
 				function _startup(){
