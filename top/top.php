@@ -251,41 +251,36 @@
 			const lc = new LoadingCircle({});
 
 			const top = (() => {
+				/**
+				*ユーザー情報取得
+				*/
 				async function user_get(){
 					try{
 						const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/user_db.php","GET");
 						let response = JSON.parse(result);
 
-						if(response.result == true){
-							let user_name = document.getElementsByClassName('account');
-							let id = document.getElementById('id');
-							let user_id = document.getElementById('user_id')
-							let last_name = document.getElementById('last_name')
-							let first_name = document.getElementById('first_name')
-							let department = document.getElementById('department')
-							let post = document.getElementById('post')
-							let birth = document.getElementById('birth')
-							let mail = document.getElementById('mail')
-
-							user_name[0].textContent = 'ようこそ！'+ response.data[0].first_name + 'さん';
-							id.textContent = response.data[0].id;
-							user_id.textContent = response.data[0].user_id;
-							last_name.textContent = response.data[0].last_name;
-							first_name.textContent = response.data[0].first_name;
-							department.textContent = response.data[0].department;
-							post.textContent = response.data[0].post;
-							birth.textContent = response.data[0].birth;
-							mail.textContent = response.data[0].mail;
-
-						}else{
+						if(response.result !== true){
 							window.location.href = '/~testaki/known_animal_SPA/login/login.php';
+							return false;
 						}
+							document.getElementsByClassName('account')[0].textContent = 'ようこそ！'+ response.data[0].first_name + 'さん';
+							document.getElementById('id').textContent = response.data[0].id;
+							document.getElementById('user_id').textContent = response.data[0].user_id;
+							document.getElementById('last_name').textContent = response.data[0].last_name;
+							document.getElementById('first_name').textContent = response.data[0].first_name;
+							document.getElementById('department').textContent = response.data[0].department;
+							document.getElementById('post').textContent = response.data[0].post;
+							document.getElementById('birth').textContent = response.data[0].birth;
+							document.getElementById('mail').textContent = response.data[0].mail;
+
 					}catch(e){
 							let err = e;
 							console.log(err.message);
 					}
 				}
-
+				/**
+				*ユーザー情報一部取得
+				*/
 				async function part_of_user_get(e) {
 					try{
 						let edit_target = e.target.id;
@@ -293,59 +288,65 @@
 						let response = JSON.parse(result);
 						let user_edit = document.getElementById("user_edit");
 						let user_label = document.getElementById("user_label");
-						if(edit_target == "last_name_btn"){
-							user_edit.setAttribute("placeholder","新しい姓");
-							user_edit.setAttribute("type","text");
-							user_edit.setAttribute("edit_info","last_name");
-							user_edit.value = response.data[0].last_name;
-							user_label.textContent = "新しい姓:";
-						}
-						if(edit_target == "first_name_btn"){
-							user_edit.setAttribute("placeholder","新しい名");
-							user_edit.setAttribute("type","text");
-							user_edit.setAttribute("edit_info","first_name");
-							user_edit.value = response.data[0].first_name;
-							user_label.textContent = "新しい名:";
-						}
-						if(edit_target == "department_btn"){
-							user_edit.setAttribute("placeholder","新しい部署名");
-							user_edit.setAttribute("type","text");
-							user_edit.setAttribute("edit_info","department");
-							user_edit.value = response.data[0].department;
-							user_label.textContent = "新しい部署名:";
-						}
-						if(edit_target == "post_btn"){
-							user_edit.setAttribute("type","text");
-							user_edit.setAttribute("placeholder","新しい役職名");
-							user_edit.setAttribute("edit_info","post");
-							user_edit.value = response.data[0].post;
-							user_label.textContent = "新しい役職名:";
-						}
-						if(edit_target == "birth_btn"){
-							user_edit.setAttribute("type","date");
-							user_edit.setAttribute("placeholder","新しい生年月日");
-							user_edit.setAttribute("edit_info","birth");
-							user_edit.value = response.data[0].birth;
-							user_label.textContent = "新しい生年月日:";
-						}
-						if(edit_target == "mail_btn"){
-							user_edit.setAttribute("type","email");
-							user_edit.setAttribute("placeholder","新しいメールアドレス");
-							user_edit.setAttribute("edit_info","mail");
-							user_edit.value = response.data[0].mail;
-							user_label.textContent = "新しいメールアドレス:";
-						}
-						/*
-						if(edit_target == "pass_btn"){
-							user_edit.setAttribute("type","password");
-							user_edit.setAttribute("edit_info","pass");
-							user_label.textContent = "新しいパスワード:";
-						}
-						*/
-					}catch(e){
+
+						switch(edit_target){
+							case "last_name_btn":
+								user_edit.setAttribute("placeholder","新しい姓");
+								user_edit.setAttribute("type","text");
+								user_edit.setAttribute("edit_info","last_name");
+								user_edit.value = response.data[0].last_name;
+								user_label.textContent = "新しい姓:";
+								break;
+
+							case "first_name_btn":
+								user_edit.setAttribute("placeholder","新しい名");
+								user_edit.setAttribute("type","text");
+								user_edit.setAttribute("edit_info","first_name");
+								user_edit.value = response.data[0].first_name;
+								user_label.textContent = "新しい名:";
+								break;
+
+							case "department_btn":
+								user_edit.setAttribute("placeholder","新しい部署名");
+								user_edit.setAttribute("type","text");
+								user_edit.setAttribute("edit_info","department");
+								user_edit.value = response.data[0].department;
+								user_label.textContent = "新しい部署名:";
+								break;
+							case "post_btn":
+								user_edit.setAttribute("type","text");
+								user_edit.setAttribute("placeholder","新しい役職名");
+								user_edit.setAttribute("edit_info","post");
+								user_edit.value = response.data[0].post;
+								user_label.textContent = "新しい役職名:";
+								break;
+
+							case "birth_btn":
+								user_edit.setAttribute("type","date");
+								user_edit.setAttribute("placeholder","新しい生年月日");
+								user_edit.setAttribute("edit_info","birth");
+								user_edit.value = response.data[0].birth;
+								user_label.textContent = "新しい生年月日:";
+								break;
+
+ 							case "mail_btn":
+								user_edit.setAttribute("type","email");
+								user_edit.setAttribute("placeholder","新しいメールアドレス");
+								user_edit.setAttribute("edit_info","mail");
+								user_edit.value = response.data[0].mail;
+								user_label.textContent = "新しいメールアドレス:";
+								break;
+							/*
+							if(edit_target == "pass_btn"){
+								user_edit.setAttribute("type","password");
+								user_edit.setAttribute("edit_info","pass");
+								user_label.textContent = "新しいパスワード:";
+							}
+							*/
+						}catch(e){
 							let err = e;
 							console.log(err.message);
-					}
+						}
 				}
 
 				function user_edit_check() {
