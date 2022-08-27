@@ -56,18 +56,20 @@
 								</form>
 							</div>
 							<div id="user_modal" class="hidden">
-								<form method="post" id="userForm">
-									<div class="col-12 mt-3 p-2">
-										<label class="form-label mb-2" id="old_pass_label" for="old_pass" class="control-label hidden">現在のパスワード:</label>
-										<input class="form-control" id="old_pass" name="old_pass_check">
+								<form method="post" id="passForm">
+									<div class="col-12 mt-3 p-2 hidden" id="old_pass_div">
+										<label class="form-label mb-2" id="old_pass_label" for="old_pass" class="control-label">現在のパスワード:</label>
+										<input class="form-control" id="old_pass" name="old_pass">
 									</div>
+								<form method="post" id="userForm">
 									<div class="col-12 mt-3 p-2">
 										<label class="form-label mb-2" id="user_label" for="user_edit" class="control-label"></label>
 										<input class="form-control" id="user_edit" name="user_up">
 									</div>
-									<div class="col-12 mt-3 p-2">
-										<label class="form-label mb-2" id="re_new_pass_label" for="re_new_pass" class="control-label hidden">新しいパスワード:</label>
-										<input class="form-control" id="re_new_pass" name="re_new_pass_check"　placeholder="もう一度入力してください">
+								</form>
+									<div class="col-12 mt-3 p-2 hidden"  id="re_new_pass_div">
+										<label class="form-label mb-2" id="re_new_pass_label" for="re_new_pass" class="control-label">新しいパスワード（再）:</label>
+										<input class="form-control" id="re_new_pass" name="re_new_pass" placeholder="もう一度入力してください">
 									</div>
 								</form>
 							</div>
@@ -238,7 +240,7 @@
 										?>
 									</td>
 									<td>
-										<button id="pass_btn" class="btn btn-primary btn-sm user_info"　type="submit" onclick="location.href='<?php echo Constants::PASS_CHANGE_URL?>'">変更</button>
+										<button id="pass_btn" class="btn btn-primary btn-sm user_info"　type="button">変更</button>
 									</td>
 								</tr>
 						</table>
@@ -291,6 +293,7 @@
 
 						switch(edit_target){
 							case "last_name_btn":
+								modal_title.textContent = "ユーザー情報の編集";
 								user_edit.setAttribute("placeholder","新しい姓");
 								user_edit.setAttribute("type","text");
 								user_edit.setAttribute("edit_info","last_name");
@@ -299,6 +302,7 @@
 								break;
 
 							case "first_name_btn":
+								modal_title.textContent = "ユーザー情報の編集";
 								user_edit.setAttribute("placeholder","新しい名");
 								user_edit.setAttribute("type","text");
 								user_edit.setAttribute("edit_info","first_name");
@@ -307,6 +311,7 @@
 								break;
 
 							case "department_btn":
+								modal_title.textContent = "ユーザー情報の編集";
 								user_edit.setAttribute("placeholder","新しい部署名");
 								user_edit.setAttribute("type","text");
 								user_edit.setAttribute("edit_info","department");
@@ -314,6 +319,7 @@
 								user_label.textContent = "新しい部署名:";
 								break;
 							case "post_btn":
+								modal_title.textContent = "ユーザー情報の編集";
 								user_edit.setAttribute("type","text");
 								user_edit.setAttribute("placeholder","新しい役職名");
 								user_edit.setAttribute("edit_info","post");
@@ -322,6 +328,7 @@
 								break;
 
 							case "birth_btn":
+								modal_title.textContent = "ユーザー情報の編集";
 								user_edit.setAttribute("type","date");
 								user_edit.setAttribute("placeholder","新しい生年月日");
 								user_edit.setAttribute("edit_info","birth");
@@ -330,23 +337,78 @@
 								break;
 
  							case "mail_btn":
+								modal_title.textContent = "ユーザー情報の編集";
 								user_edit.setAttribute("type","email");
 								user_edit.setAttribute("placeholder","新しいメールアドレス");
 								user_edit.setAttribute("edit_info","mail");
 								user_edit.value = response.data[0].mail;
 								user_label.textContent = "新しいメールアドレス:";
 								break;
-							/*
-							if(edit_target == "pass_btn"){
+
+							case "pass_btn":
+								modal_title.textContent = "パスワード変更";
 								user_edit.setAttribute("type","password");
+								user_edit.placeholder = "";
 								user_edit.setAttribute("edit_info","pass");
+								user_edit.value = "";
 								user_label.textContent = "新しいパスワード:";
+								document.getElementById("old_pass_div").classList.remove("hidden");
+								document.getElementById("re_new_pass_div").classList.remove("hidden");
+								break;
+
 							}
-							*/
 						}catch(e){
 							let err = e;
 							console.log(err.message);
 						}
+				}
+
+				function pass_check() {
+					let new_pass = document.getElementById('user_edit');
+					let re_new_pass = document.getElementById('re_new_pass');
+					let msg = "";
+					if(document.getElementById('old_pass').value == "") {
+						msg = '現在のパスワードを入力してください。';
+					}
+					if(new_pass.value == "") {
+						msg = msg + '\n新しいパスワードを入力してください。';
+					}
+					if(re_new_pass.value == "") {
+						msg = msg + '\n新しいパスワード（再）を入力してください。';
+					}
+					if(new_pass.value != re_new_pass.value) {
+						msg = msg + '\n１回目と２回目で新しいパスワードが一致しません。'
+					}
+					if(msg != "") {
+						return msg;
+					}else{
+						return "";
+					}
+				}
+
+				async function pass_change_done() {
+					let msg = pass_check();
+					if(msg != "") {
+						alert(msg);
+					}else{
+						const url = '../user_edit/pass_change.php';
+						const method = 'POST';
+						const formdata = new FormData(document.getElementById("passForm"));
+						const pass_result = await new WebApi({}).call(url,method,formdata);
+						let response = JSON.parse(pass_result);
+						console.log(response);
+						if(response.result === "old_pass_false") {
+							alert("現在のパスワードが正しくありません。");
+						}else if(response.result === "pass_pattern_false") {
+							alert("新しいパスワードは半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上のパスワードにしてください。");
+						}else if(response.result === true){
+							alert("更新しました！");
+						}else{
+							alert('エラーが発生したため、更新できませんでした。');
+						}
+						// キャッシュを無視してサーバーからリロード
+						window.location.reload(true);
+					}
 				}
 
 				function user_edit_check() {
@@ -609,6 +671,8 @@
 						modal.classList.add("hidden");
 						animal_modal.classList.add("hidden");
 						user_modal.classList.add("hidden");
+						document.getElementById("old_pass_div").classList.add("hidden");
+						document.getElementById("re_new_pass_div").classList.add("hidden");
 						if(fileup.classList.contains("hidden") == true){
 							fileup.classList.remove("hidden")};
 					}, false);
@@ -617,6 +681,8 @@
 						modal.classList.add("hidden")
 						animal_modal.classList.add("hidden");
 						user_modal.classList.add("hidden");
+						document.getElementById("old_pass_div").classList.add("hidden");
+						document.getElementById("re_new_pass_div").classList.add("hidden");
 						if(fileup.classList.contains("hidden") == true){
 							fileup.classList.remove("hidden")};
 					}, false);
@@ -631,6 +697,9 @@
 						//モーダルの削除ボタン押下後
 						}else if(modal_title.textContent == "このデータを削除しますか？"){
 							delete_done();
+						//パスワード変更モーダルの更新ボタン押下後
+						}else if(modal_title.textContent == "パスワード変更"){
+							pass_change_done();
 						//ユーザー情報の編集モーダルの更新ボタン押下後
 						}else{
 							user_edit_done();
@@ -670,7 +739,6 @@
 						userInfo.addEventListener('click', (e) => {
 							part_of_user_get(e);
 							md_entry.textContent = "更新";
-							modal_title.textContent = "ユーザー情報の編集";
 							user_modal.classList.remove("hidden");
 							modal.classList.remove("hidden");
 						}, false)
