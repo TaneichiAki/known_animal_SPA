@@ -59,7 +59,7 @@
 								<form method="post" id="passForm">
 									<div class="col-12 mt-3 p-2 hidden" id="old_pass_div">
 										<label class="form-label mb-2" id="old_pass_label" for="old_pass" class="control-label">現在のパスワード:</label>
-										<input class="form-control" id="old_pass" name="old_pass">
+										<input type="password" class="form-control" id="old_pass" name="old_pass">
 									</div>
 								<form method="post" id="userForm">
 									<div class="col-12 mt-3 p-2">
@@ -69,7 +69,8 @@
 								</form>
 									<div class="col-12 mt-3 p-2 hidden"  id="re_new_pass_div">
 										<label class="form-label mb-2" id="re_new_pass_label" for="re_new_pass" class="control-label">新しいパスワード（再）:</label>
-										<input class="form-control" id="re_new_pass" name="re_new_pass" placeholder="もう一度入力してください">
+										<input type="password" class="form-control" id="re_new_pass" name="re_new_pass" placeholder="もう一度入力してください">
+										<p class="mt-3 mb-3 text-center">※パスワードは半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上にしてください。</p>
 									</div>
 								</form>
 							</div>
@@ -403,11 +404,11 @@
 							alert("新しいパスワードは半角英小文字大文字数字をそれぞれ1種類以上含む8文字以上のパスワードにしてください。");
 						}else if(response.result === true){
 							alert("更新しました！");
+							// キャッシュを無視してサーバーからリロード
+							window.location.reload(true);
 						}else{
 							alert('エラーが発生したため、更新できませんでした。');
 						}
-						// キャッシュを無視してサーバーからリロード
-						window.location.reload(true);
 					}
 				}
 
@@ -440,15 +441,17 @@
 						console.log(response);
 						if(response.result === true){
 							alert("更新しました！");
+							// キャッシュを無視してサーバーからリロード
+							window.location.reload(true);
 						}else if(response.result === "mail_true"){
 							alert("登録したメールアドレスに登録完了のメールを送りました。\nメールの受信をご確認ください。");
+							// キャッシュを無視してサーバーからリロード
+							window.location.reload(true);
 						}else if(response.result === "mail_false"){
 							alert("メール送信失敗です");
 						}else{
 							alert('エラーが発生したため、更新できませんでした。');
 						}
-						// キャッシュを無視してサーバーからリロード
-						window.location.reload(true);
 					}
 				}
 
@@ -583,11 +586,11 @@
 							let response = JSON.parse(entry_result);
 							if(response.result === true){
 								alert("登録しました！")
+								// キャッシュを無視してサーバーからリロード
+								window.location.reload(true);
 							}else{
 								alert('エラーが発生したため、登録できませんでした。');
 							}
-							// キャッシュを無視してサーバーからリロード
-							window.location.reload(true);
 						}
 					}
 
@@ -606,11 +609,11 @@
 							let response = JSON.parse(edit_result);
 							if(response.result === true){
 								alert("更新しました！")
+								// キャッシュを無視してサーバーからリロード
+								window.location.reload(true);
 							}else{
 								alert('エラーが発生したため、更新できませんでした。');
 							}
-							// キャッシュを無視してサーバーからリロード
-							window.location.reload(true);
 						}
 				}
 
@@ -623,11 +626,11 @@
 					let response = JSON.parse(delete_result);
 					if(response.result === true){
 						alert("削除しました！")
+						// キャッシュを無視してサーバーからリロード
+						window.location.reload(true);
 					}else{
 						alert('エラーが発生したため、削除できませんでした。');
 					}
-					// キャッシュを無視してサーバーからリロード
-					window.location.reload(true);
 				}
 
 				async function animal_get(e) {
