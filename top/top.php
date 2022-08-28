@@ -56,17 +56,16 @@
 								</form>
 							</div>
 							<div id="user_modal" class="hidden">
-								<form method="post" id="passForm">
+								<form method="post" id="userForm">
 									<div class="col-12 mt-3 p-2 hidden" id="old_pass_div">
 										<label class="form-label mb-2" id="old_pass_label" for="old_pass" class="control-label">現在のパスワード:</label>
 										<input type="password" class="form-control" id="old_pass" name="old_pass">
 									</div>
-								<form method="post" id="userForm">
 									<div class="col-12 mt-3 p-2">
 										<label class="form-label mb-2" id="user_label" for="user_edit" class="control-label"></label>
 										<input class="form-control" id="user_edit" name="user_up">
+										<p id="mail_comment" class="mt-3　mb-3 hidden">※更新ボタンクリック後、上記アドレスに変更完了メールが送信されます。</p>
 									</div>
-								</form>
 									<div class="col-12 mt-3 p-2 hidden"  id="re_new_pass_div">
 										<label class="form-label mb-2" id="re_new_pass_label" for="re_new_pass" class="control-label">新しいパスワード（再）:</label>
 										<input type="password" class="form-control" id="re_new_pass" name="re_new_pass" placeholder="もう一度入力してください">
@@ -278,7 +277,6 @@
 
 					}catch(e){
 							let err = e;
-							console.log(err.message);
 					}
 				}
 				/**
@@ -344,6 +342,7 @@
 								user_edit.setAttribute("edit_info","mail");
 								user_edit.value = response.data[0].mail;
 								user_label.textContent = "新しいメールアドレス:";
+								document.getElementById("mail_comment").classList.remove("hidden");
 								break;
 
 							case "pass_btn":
@@ -360,7 +359,6 @@
 							}
 						}catch(e){
 							let err = e;
-							console.log(err.message);
 						}
 				}
 
@@ -394,10 +392,9 @@
 					}else{
 						const url = '../user_edit/pass_change.php';
 						const method = 'POST';
-						const formdata = new FormData(document.getElementById("passForm"));
+						const formdata = new FormData(document.getElementById("userForm"));
 						const pass_result = await new WebApi({}).call(url,method,formdata);
 						let response = JSON.parse(pass_result);
-						console.log(response);
 						if(response.result === "old_pass_false") {
 							alert("現在のパスワードが正しくありません。");
 						}else if(response.result === "pass_pattern_false") {
@@ -431,14 +428,10 @@
 					}else{
 						let edit_info = document.getElementById("user_edit").getAttribute("edit_info");
 						const url = '../user_edit/user_info_edit.php?update_info=' + edit_info;
-						console.log(edit_info);
-						console.log(url);
 						const method = 'POST';
 						const formdata = new FormData(document.getElementById("userForm"));
-						console.log(formdata);
 						const edit_result = await new WebApi({}).call(url,method,formdata);
 						let response = JSON.parse(edit_result);
-						console.log(response);
 						if(response.result === true){
 							alert("更新しました！");
 							// キャッシュを無視してサーバーからリロード
@@ -457,11 +450,8 @@
 
 				async function all_animals_get(){
 					const result = await new WebApi({}).call("/~testaki/known_animal_SPA/top/animal_db.php","GET");
-					console.log(result);
-					console.log(7);
 					let response = JSON.parse(result);
 					if(response.result === true){
-						console.log(response.data[0].length);
 						let animal_count = response.data[0].length;
 
 						let loop = document.getElementById('loop');
@@ -562,7 +552,6 @@
 					}
 					if(fileup.value != ""){
 						const allowExtensions = '.(jpeg|jpg|png|bmp|gif)$'; // 許可する拡張子
-						console.log(fileup.value.match(allowExtensions));
 						if(fileup.value.match(allowExtensions) == null){
 							msg = msg + '\n拡張子が jpeg, jpg, png, bmp, gif 以外のファイルはアップロードできません。';
 						}
@@ -604,7 +593,6 @@
 							const url = '../animal_edit/edit.php?update_animal=' + select_a_no;
 							const method = 'POST';
 							const formdata = new FormData(document.getElementById("uploadForm"));
-							console.log(formdata);
 							const edit_result = await new WebApi({}).call(url,method,formdata);
 							let response = JSON.parse(edit_result);
 							if(response.result === true){
@@ -640,7 +628,6 @@
 					const result = await new WebApi({}).call(url,method);
 					let response = JSON.parse(result);
 					if(response.result === true){
-						console.log(response.data[0].name);
 						animal_name.value = response.data[0].name;
 						animal_family.value = response.data[0].family;
 						animal_features.value = response.data[0].features;
@@ -676,6 +663,7 @@
 						user_modal.classList.add("hidden");
 						document.getElementById("old_pass_div").classList.add("hidden");
 						document.getElementById("re_new_pass_div").classList.add("hidden");
+						document.getElementById("mail_comment").classList.add("hidden");
 						if(fileup.classList.contains("hidden") == true){
 							fileup.classList.remove("hidden")};
 					}, false);
@@ -686,6 +674,7 @@
 						user_modal.classList.add("hidden");
 						document.getElementById("old_pass_div").classList.add("hidden");
 						document.getElementById("re_new_pass_div").classList.add("hidden");
+						document.getElementById("mail_comment").classList.add("hidden");
 						if(fileup.classList.contains("hidden") == true){
 							fileup.classList.remove("hidden")};
 					}, false);

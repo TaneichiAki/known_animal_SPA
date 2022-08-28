@@ -1,18 +1,46 @@
 <?php
-	require_once(__DIR__."/../classes/Dao.php");
-	require_once(__DIR__.'/../classes/constants.php');
+  require_once(__DIR__."/../classes/Dao.php");
+  require_once(__DIR__."/../classes/constants.php");
 	/**
 	*グローバル変数定義
 	*/
-	$msg = "";
 	$number = "";
+
+  try{
+		$select_sql = 'select * from users where mail = ?';
+		$used_mail = Dao::db()->show_one_row($select_sql,array($_REQUEST['mail_set']));
+
+    if($used_mail["result"] == false){
+			$response = array(
+				"result"=>mail_false
+			);
+			echo json_encode($response);
+		}else{
+			pass_issuance();
+			$result = send_mail();
+			if($result == true) {
+				$response = array(
+					"result"=>true
+				);
+				echo json_encode($response);
+			}else{
+				$response = array(
+					"result"=>false
+				);
+				echo json_encode($response);
+			}
+		}
+	}catch(PDOException $e){
+		print('Error:'.$e->getMessage());
+		die();
+	}
 	/*
 	*メール送信処理
 	*/
 	function send_mail(){
 		mb_language("Japanese");
 		mb_internal_encoding("UTF-8");
-		$to = $_REQUEST['mail'];
+		$to = $_REQUEST['mail_set'];
 		$title = '仮パスワード発行のお知らせ';
 		$message = 'known_animalシステムからのお知らせです。'.PHP_EOL
 		.'仮パスワードを発行しました。'.PHP_EOL
@@ -20,23 +48,11 @@
 		.'仮パスワード：'.$GLOBALS['number'];
 		$headers = "From: known_animal@test.com";
 
-		if(mb_send_mail($to, $title, $message, $headers))
-		{
-			echo '入力したメールアドレスに仮パスワード発行のメールを送りました。<br />';
-			echo 'メールの受信をご確認ください。';
-			echo $GLOBALS['number'];
+		if(mb_send_mail($to, $title, $message, $headers)){
+			return true;
+		}else{
+			return false;
 		}
-		else
-		{
-			echo "メール送信失敗です";
-		}
-		?>
-		<script>
-		 setTimeout(function(){
-		 window.location.href='<?php echo Constants::LOGIN_URL?>';
-		 }, 5*1000);
-		</script>
-	<?php
 	}
 	/*
 	*仮パスワード発行処理
@@ -56,91 +72,7 @@
 		//上記で発行したパスワードをデータベース上に更新登録
 		$update_sql = "update users set password = ? where mail = ?";
 		$hash = password_hash($GLOBALS['number'], PASSWORD_DEFAULT);
-		Dao::db()->mod_exec($update_sql,array($hash,$_REQUEST['mail']));
-		//メール送信実行
-		send_mail();
+		Dao::db()->mod_exec($update_sql,array($hash,$_REQUEST['mail_set']));
 	}
-	/*
-	*POST時処理
-	*/
-	function post(){
-		$select_sql = 'select * from users where mail = ?';
-		$used_mail = Dao::db()->show_one_row($select_sql,array($_REQUEST['mail']));
-		if($_REQUEST['mail'] == ""){
-			return "メールアドレスを入力してください。";
-		}
-		if($used_mail['result'] == false ){
-			return "入力したアドレスは登録がありません。";
-		}
-		//仮パスワード発行実行
-		pass_issuance();
-	}
-	/*
-	*メイン処理
-	*/
-	function main(){
-		if($_SERVER["REQUEST_METHOD"]== "POST"){
-			try{
-				$GLOBALS['msg'] = post();
-			}catch (PDOException $e){
-				//phpではない外部のアプリと連携するときはtry catchでエラーが起きた時の動きを定義した方が良い
-				print('Error:'.$e->getMessage());
-				die();
-			}
-		}
-	}
-	/*
-	*メイン処理実行
-	*/
-	main();
+
 ?>
-<!DOCTYPE html>
-<html lang="ja">
-	<head>
-		<meta charset="utf-8">
-		<!-- Required meta tags -->
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-		<!-- Bootstrap CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-		<title>パスワード再設定画面</title>
-	</head>
-	<body>
-		<div class="container-fluid">
-			<div class="row">
-				<form class="border offset-1 col-10 offset-md-4 col-md-4 rounded bg-light mt-4 mb-5" method="post">
-					<div class="row">
-						<div class="offset-2 col-8 text-center mt-3 mb-3">
-							<h5>パスワード再設定</h5>
-							<?php
-								if ($msg != ""){
-									echo "<center><div>".$msg."</div></center>";
-								}
-							?>
-						</div>
-					</div>
-					<div class="row">
-						<div class="offset-2 col-8 text-center mt-3 mb-3">
-							<p>known_animalシステムアカウントに関連づけられているEメールアドレスを入力してください。</p>
-						</div>
-					</div>
-					<div class="row">
-						<div class="offset-2 col-8 mt-3">
-							<input type='email' class="form-control" name='mail'>
-						</div>
-					</div>
-					<div class="row">
-						<button class="offset-2 col-8 offset-md-4 col-md-4 btn btn-primary btn-sm mt-4 mb-4" type="submit">パスワードを再設定</button>
-					</div>
-				</form>
-			</div>
-			<div class="row">
-				<div class="offset-2 col-8 offset-md-4 col-md-4 text-center">
-					<a href="<?php echo Constants::LOGIN_URL?>" class="link-primary text-decoration-none">ログイン画面へ戻る</a>
-				</div>
-			</div>
-		</div>
-	</body>
-</html>
