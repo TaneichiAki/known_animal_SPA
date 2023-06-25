@@ -469,8 +469,8 @@
 
 							newElement_img.setAttribute("src","animal_image_db.php?imgNo="+response.data[0][i].no);
 							newElement_img.classList.add('card-img-top');
-							newElement_img.setAttribute("height",220);
-							newElement_img.setAttribute("width","auto");
+							//newElement_img.setAttribute("width","100%");
+							//newElement_img.setAttribute("object-fit","cover");
 							newElement2.appendChild(newElement_img);
 
 							let newElement3 = document.createElement("div"); // div要素作成
